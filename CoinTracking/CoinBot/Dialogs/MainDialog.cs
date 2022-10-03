@@ -39,7 +39,10 @@ namespace CoinBot.Dialogs
             //Add Named Dialogs
             AddDialog(new GreetingDialog($"{nameof(MainDialog)}.greeting", _stateService));
             AddDialog(new BugReportDialog($"{nameof(MainDialog)}.bugReport", _stateService));
+            AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService));
+            AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService));
             AddDialog(new BugTypeDialog($"{nameof(MainDialog)}.bugType", _botservices));
+            AddDialog(new CoinDialog($"{nameof(MainDialog)}.coin", _botservices));
             AddDialog(new WaterfallDialog($"{nameof(MainDialog)}.mainFlow", waterfallSteps));
             
 
@@ -55,6 +58,7 @@ namespace CoinBot.Dialogs
                 // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
                 var recognizerResult = await _botservices.Dispatch.RecognizeAsync<LuisModel>(stepContext.Context, cancellationToken);
 
+
                 // Top intent tell us which cognitive service to use.
                 var topIntent = recognizerResult.TopIntent();
                 
@@ -62,6 +66,12 @@ namespace CoinBot.Dialogs
                 {
                     case LuisModel.Intent.GreetingIntent:
                         return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.greeting", null, cancellationToken);
+                    case LuisModel.Intent.QueryCoinIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.coin", null, cancellationToken);
+                    case LuisModel.Intent.QueryHotCoinIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.hotCoin", null, cancellationToken);
+                    case LuisModel.Intent.QueryFavoriteCoinIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.favoriteCoin", null, cancellationToken);
                     case LuisModel.Intent.NewBugReportIntent:
                         var userProfile = new UserProfile();
                         var bugReport = recognizerResult.Entities.BugReport_ML?.FirstOrDefault();
