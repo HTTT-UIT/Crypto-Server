@@ -65,12 +65,13 @@ namespace CoinBot.Dialogs
             {
                 // Set the name
                 userProfile.Name = (string)stepContext.Result;
+                userProfile.Id = stepContext.Context.Activity.From.Id;
 
                 // Save any state changes that might have occured during the turn
                 await _stateService.UserProfileAccessor.SetAsync(stepContext.Context, userProfile);
             }
 
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text(String.Format("Hi, {0}. How can I help you today?", userProfile.Name)), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text(String.Format("Hi, {0}. How can I help you today? {1}", userProfile.Name, stepContext.Context.Activity.From.Id)), cancellationToken);
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
     }
