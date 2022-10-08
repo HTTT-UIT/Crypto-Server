@@ -1,0 +1,1189 @@
+{
+  "luis_schema_version": "7.0.0",
+  "intents": [
+    {
+      "name": "GreetingIntent",
+      "features": []
+    },
+    {
+      "name": "NewBugReportIntent",
+      "features": [
+        {
+          "featureName": "NewBugReport_Descriptor",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "None",
+      "features": []
+    },
+    {
+      "name": "QueryBugTypeIntent",
+      "features": []
+    },
+    {
+      "name": "QueryCoinIntent",
+      "features": [
+        {
+          "featureName": "NewCoinTrack_Descriptor",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "QueryFavoriteCoinIntent",
+      "features": [
+        {
+          "featureName": "FavoriteCoin_Descriptor",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "QueryHotCoinIntent",
+      "features": [
+        {
+          "featureName": "Hot_Descriptor",
+          "isRequired": false
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "name": "BugReport_ML",
+      "children": [
+        {
+          "name": "CallbackTime",
+          "children": [],
+          "features": [
+            {
+              "modelName": "datetimeV2",
+              "isRequired": false
+            }
+          ]
+        },
+        {
+          "name": "PhoneNumber",
+          "children": [],
+          "features": [
+            {
+              "modelName": "phonenumber",
+              "isRequired": false
+            }
+          ]
+        },
+        {
+          "name": "Description",
+          "children": [
+            {
+              "name": "Bug",
+              "children": [],
+              "features": [
+                {
+                  "modelName": "BugTypes_List",
+                  "isRequired": true
+                }
+              ]
+            }
+          ],
+          "features": []
+        }
+      ],
+      "roles": [],
+      "features": [
+        {
+          "featureName": "NewBugReport_Descriptor",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "Coin_ML",
+      "children": [
+        {
+          "name": "Coin",
+          "children": [],
+          "features": []
+        }
+      ],
+      "roles": [],
+      "features": [
+        {
+          "featureName": "NewCoinTrack_Descriptor",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "FavoriteCoin_ML",
+      "children": [
+        {
+          "name": "Favorite",
+          "children": [],
+          "features": []
+        }
+      ],
+      "roles": [],
+      "features": [
+        {
+          "featureName": "FavoriteCoin_Descriptor",
+          "isRequired": false
+        }
+      ]
+    },
+    {
+      "name": "HotCoin_ML",
+      "children": [
+        {
+          "name": "Hot",
+          "children": [],
+          "features": []
+        }
+      ],
+      "roles": [],
+      "features": [
+        {
+          "featureName": "Hot_Descriptor",
+          "isRequired": false
+        }
+      ]
+    }
+  ],
+  "hierarchicals": [],
+  "composites": [],
+  "closedLists": [
+    {
+      "name": "BugTypes_List",
+      "subLists": [
+        {
+          "canonicalForm": "Crash",
+          "list": [
+            "Blue screen",
+            "Crashing",
+            "Frozen"
+          ]
+        },
+        {
+          "canonicalForm": "Performance",
+          "list": [
+            "Slowness",
+            "Really slow",
+            "Takes Forever"
+          ]
+        },
+        {
+          "canonicalForm": "Power",
+          "list": [
+            "Won't Start Up",
+            "Won't Turn On"
+          ]
+        },
+        {
+          "canonicalForm": "Security",
+          "list": [
+            "Virus",
+            "Not Secure"
+          ]
+        },
+        {
+          "canonicalForm": "Serious bug",
+          "list": [
+            "Major bug"
+          ]
+        },
+        {
+          "canonicalForm": "Usability",
+          "list": []
+        },
+        {
+          "canonicalForm": "Other",
+          "list": []
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "prebuiltEntities": [
+    {
+      "name": "datetimeV2",
+      "roles": []
+    },
+    {
+      "name": "phonenumber",
+      "roles": []
+    }
+  ],
+  "utterances": [
+    {
+      "text": "can you tell me if a crash is a bug type?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "chào",
+      "intent": "GreetingIntent",
+      "entities": []
+    },
+    {
+      "text": "chào bạn",
+      "intent": "GreetingIntent",
+      "entities": []
+    },
+    {
+      "text": "chào bot",
+      "intent": "GreetingIntent",
+      "entities": []
+    },
+    {
+      "text": "chi tiết về những coin đã lưu",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 28,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 26,
+              "endPos": 28,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "chi tiết về những đồng đã thích",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 30,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 26,
+              "endPos": 30,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "cho tôi xem thông tin về đồng ethereum",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 8,
+          "endPos": 37,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 30,
+              "endPos": 37,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "danh sách tiền ảo xu hướng",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 25,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 18,
+              "endPos": 25,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "giúp tôi tìm kiếm thông tin về đồng cardano",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 9,
+          "endPos": 42,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 36,
+              "endPos": 42,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "hãy truy xuất chi tiết đồng litecoin",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 4,
+          "endPos": 35,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 28,
+              "endPos": 35,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "hello",
+      "intent": "GreetingIntent",
+      "entities": []
+    },
+    {
+      "text": "hey",
+      "intent": "GreetingIntent",
+      "entities": []
+    },
+    {
+      "text": "hi",
+      "intent": "GreetingIntent",
+      "entities": []
+    },
+    {
+      "text": "hiển thị những đồng tiền đã ghi nhớ",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 34,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 28,
+              "endPos": 34,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i have an issue with my pc. it has a virus",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 41,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 21,
+              "endPos": 41,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 37,
+                  "endPos": 41,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i want to open a bug report for a computer crash",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 47,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 34,
+              "endPos": 47,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 43,
+                  "endPos": 47,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i want to open a bug report for a virus in chrome.",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 49,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 34,
+              "endPos": 49,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 34,
+                  "endPos": 38,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i want to open a bug report for a virus on my computer. i can be reached at 0866073147",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 85,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 34,
+              "endPos": 53,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 34,
+                  "endPos": 38,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "entity": "PhoneNumber",
+              "startPos": 76,
+              "endPos": 85,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i want to submit a bug report for an issue i'm experiencing with microsoft word. the app is really slow and takes forever to start. you can reach me at 086073147 at 2:00 pm on monday",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 181,
+          "children": [
+            {
+              "entity": "PhoneNumber",
+              "startPos": 152,
+              "endPos": 160,
+              "children": []
+            },
+            {
+              "entity": "CallbackTime",
+              "startPos": 165,
+              "endPos": 181,
+              "children": []
+            },
+            {
+              "entity": "Description",
+              "startPos": 37,
+              "endPos": 130,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 108,
+                  "endPos": 120,
+                  "children": []
+                },
+                {
+                  "entity": "Bug",
+                  "startPos": 92,
+                  "endPos": 102,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i want to submit a bug report for an issue i'm having with excel. it makes my computer blue screen. you can reach me at 032933443 on tuesday at 3 pm.",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 148,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 37,
+              "endPos": 97,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 87,
+                  "endPos": 97,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "entity": "CallbackTime",
+              "startPos": 133,
+              "endPos": 147,
+              "children": []
+            },
+            {
+              "entity": "PhoneNumber",
+              "startPos": 120,
+              "endPos": 128,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i want to submit a bug report for my computers performance being poor",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 10,
+          "endPos": 68,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 34,
+              "endPos": 68,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 47,
+                  "endPos": 57,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i'm experiencing an issue where my computer is stuck at a blue screen",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 4,
+          "endPos": 68,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 32,
+              "endPos": 68,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 58,
+                  "endPos": 68,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i'm having a problem with microsoft excel. the app is running slow. can you call me back at 0843434223",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 4,
+          "endPos": 101,
+          "children": [
+            {
+              "entity": "Description",
+              "startPos": 13,
+              "endPos": 65,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 54,
+                  "endPos": 65,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "entity": "PhoneNumber",
+              "startPos": 92,
+              "endPos": 101,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "i'm running into a problem with excel where it's really slow. can someone call me back at 0866073147",
+      "intent": "NewBugReportIntent",
+      "entities": [
+        {
+          "entity": "BugReport_ML",
+          "startPos": 4,
+          "endPos": 99,
+          "children": [
+            {
+              "entity": "PhoneNumber",
+              "startPos": 90,
+              "endPos": 99,
+              "children": []
+            },
+            {
+              "entity": "Description",
+              "startPos": 17,
+              "endPos": 59,
+              "children": [
+                {
+                  "entity": "Bug",
+                  "startPos": 49,
+                  "endPos": 59,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "is frozen a bug type?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "is major bug is a bug type?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "is other a bug type?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "is power in the bug type list?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "is security a bug type?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "lấy thông tin những đồng tiền ảo yêu thích",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 41,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 33,
+              "endPos": 41,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "những đồng coin nổi tiếng là đồng nào?",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 37,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 16,
+              "endPos": 24,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "những đồng tiền ảo nào đang hot vậy?",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 30,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 28,
+              "endPos": 30,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi coin dogecoin",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 21,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 14,
+              "endPos": 21,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi coin hot",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 16,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 14,
+              "endPos": 16,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi coin luna",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 17,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 14,
+              "endPos": 17,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi đồng coin hot",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 21,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 19,
+              "endPos": 21,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi luna",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 12,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 9,
+              "endPos": 12,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi những đồng đã lưu",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 25,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 23,
+              "endPos": 25,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "theo dõi những đồng yêu thích",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 28,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 20,
+              "endPos": 28,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "thông tin về những đồng tiền đã lưu",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 34,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 32,
+              "endPos": 34,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "thông tin về những đồng tiền yêu thích",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 37,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 29,
+              "endPos": 37,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "tìm kiếm coin bitcoin",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 20,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 14,
+              "endPos": 20,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "tìm kiếm thông tin về dogecoin",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 29,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 22,
+              "endPos": 29,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "truy xuất thông tin coin lunac",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 29,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 25,
+              "endPos": 29,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "truy xuất thông tin về ethereum",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 30,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 23,
+              "endPos": 30,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "will you tell me if power is a bug type?",
+      "intent": "QueryBugTypeIntent",
+      "entities": []
+    },
+    {
+      "text": "xem danh sách coin nổi bật",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 25,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 19,
+              "endPos": 25,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "xem danh sách tiền ảo hot",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 24,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 22,
+              "endPos": 24,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "xem danh sách tiền ảo xu hướng",
+      "intent": "QueryHotCoinIntent",
+      "entities": [
+        {
+          "entity": "HotCoin_ML",
+          "startPos": 0,
+          "endPos": 29,
+          "children": [
+            {
+              "entity": "Hot",
+              "startPos": 22,
+              "endPos": 29,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "xem những coin yêu thích",
+      "intent": "QueryFavoriteCoinIntent",
+      "entities": [
+        {
+          "entity": "FavoriteCoin_ML",
+          "startPos": 0,
+          "endPos": 23,
+          "children": [
+            {
+              "entity": "Favorite",
+              "startPos": 15,
+              "endPos": 23,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "xem thông tin về bitcoin",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 23,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 17,
+              "endPos": 23,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "xem thông tin về shiba inu",
+      "intent": "QueryCoinIntent",
+      "entities": [
+        {
+          "entity": "Coin_ML",
+          "startPos": 0,
+          "endPos": 25,
+          "children": [
+            {
+              "entity": "Coin",
+              "startPos": 17,
+              "endPos": 25,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "xin chào",
+      "intent": "GreetingIntent",
+      "entities": []
+    }
+  ],
+  "versionId": "0.1",
+  "name": "NFT-CustomerService",
+  "desc": "",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "phraselists": [
+    {
+      "name": "NewBugReport_Descriptor",
+      "mode": true,
+      "words": "Issue,problem,difficulty,trouble,complication,open,submit",
+      "activated": true,
+      "enabledForAllModels": false
+    },
+    {
+      "name": "NewCoinTrack_Descriptor",
+      "mode": true,
+      "words": "Xem,Tìm kiếm,Tìm,Truy xuất,Theo dõi",
+      "activated": true,
+      "enabledForAllModels": false
+    },
+    {
+      "name": "Hot_Descriptor",
+      "mode": true,
+      "words": "hot,xu hướng,nổi tiếng,nổi bật",
+      "activated": true,
+      "enabledForAllModels": false
+    },
+    {
+      "name": "FavoriteCoin_Descriptor",
+      "mode": true,
+      "words": "yêu thích,ghi nhớ,thích,lưu",
+      "activated": true,
+      "enabledForAllModels": false
+    }
+  ],
+  "regex_features": [],
+  "patterns": [],
+  "settings": []
+}
