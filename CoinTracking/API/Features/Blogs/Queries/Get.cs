@@ -8,7 +8,7 @@ namespace API.Features.Blogs.Queries
 {
     public class Get
     {
-        public class Handler : IRequestHandler<Query, BlogEntity>
+        public class Handler : IRequestHandler<Query, BlogEntity?>
         {
             private readonly MasterContext _context;
 
@@ -27,7 +27,7 @@ namespace API.Features.Blogs.Queries
             }
         }
 
-        public class Query : IRequest<BlogEntity>
+        public class Query : IRequest<BlogEntity?>
         {
             [FromRoute]
             public int Id { get; set; }
