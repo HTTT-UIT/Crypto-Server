@@ -71,7 +71,7 @@ namespace CoinBot.Dialogs
                 await _stateService.UserProfileAccessor.SetAsync(stepContext.Context, userProfile);
             }
 
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text(String.Format("Hi, {0}. How can I help you today? {1}", userProfile.Name, stepContext.Context.Activity.From.Id)), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text(String.Format("Hi, {0}. How can I help you today?", userProfile.Name)), cancellationToken);
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
     }
