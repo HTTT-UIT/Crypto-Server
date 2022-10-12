@@ -17,12 +17,14 @@ namespace CoinBot.Dialogs
         #region Variables
         private readonly StateService _stateService;
         private readonly BotServices _botservices;
+        private readonly CoinMarketCapApi _coinMarketCapApi;
         #endregion
 
-        public MainDialog(StateService stateService, BotServices botServices) : base(nameof(MainDialog))
+        public MainDialog(StateService stateService, BotServices botServices, CoinMarketCapApi coinMarketCapApi) : base(nameof(MainDialog))
         {
             _stateService = stateService ?? throw new System.ArgumentNullException(nameof(stateService));
             _botservices = botServices ?? throw new System.ArgumentNullException(nameof(botServices));
+            _coinMarketCapApi = coinMarketCapApi ?? throw new System.ArgumentNullException(nameof(coinMarketCapApi));
 
             InitializeWaterfallDialog();
         }
@@ -42,7 +44,7 @@ namespace CoinBot.Dialogs
             AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService));
             AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService));
             AddDialog(new BugTypeDialog($"{nameof(MainDialog)}.bugType", _botservices));
-            AddDialog(new CoinDialog($"{nameof(MainDialog)}.coin", _botservices));
+            AddDialog(new CoinDialog($"{nameof(MainDialog)}.coin", _botservices, _coinMarketCapApi));
             AddDialog(new WaterfallDialog($"{nameof(MainDialog)}.mainFlow", waterfallSteps));
             
 
@@ -52,7 +54,6 @@ namespace CoinBot.Dialogs
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // 4:08 6.12
             try
             {
                 // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
