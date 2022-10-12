@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using CoinBot.Bots;
 using CoinBot.Dialogs;
 using CoinBot.Services;
+using CoinBot.Helpers;
 
 namespace CoinBot
 {
@@ -44,6 +45,7 @@ namespace CoinBot
 
             // Configure services
             services.AddSingleton<BotServices>();
+            services.AddSingleton<CoinMarketCapApi>();
 
             // Configure State
             ConfigureState(services);
