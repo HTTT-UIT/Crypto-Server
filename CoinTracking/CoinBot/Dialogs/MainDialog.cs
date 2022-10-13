@@ -41,7 +41,7 @@ namespace CoinBot.Dialogs
             //Add Named Dialogs
             AddDialog(new GreetingDialog($"{nameof(MainDialog)}.greeting", _stateService));
             AddDialog(new BugReportDialog($"{nameof(MainDialog)}.bugReport", _stateService));
-            AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService));
+            AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService, _coinMarketCapApi));
             AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService));
             AddDialog(new BugTypeDialog($"{nameof(MainDialog)}.bugType", _botservices));
             AddDialog(new CoinDialog($"{nameof(MainDialog)}.coin", _botservices, _coinMarketCapApi));
