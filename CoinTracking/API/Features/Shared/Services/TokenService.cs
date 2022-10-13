@@ -20,7 +20,7 @@ namespace API.Features.Shared.Services
 
         public async Task<Tokens?> Authenticate(User user)
         {
-            var users = await _userService.GetUser();
+            var users = await _userService.GetList();
             if (!users.Any(x => x.UserName == user.UserName && x.Password == user.Password))
             {
                 return null;
@@ -33,7 +33,8 @@ namespace API.Features.Shared.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName)
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Role, "1")
                 }),
                 Issuer = _iconfiguration["Jwt:Issuer"],
                 Audience = _iconfiguration["Jwt:Audience"],
@@ -41,7 +42,7 @@ namespace API.Features.Shared.Services
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(tokenKey),
                     SecurityAlgorithms.HmacSha256Signature
-                )
+                ),
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new Tokens { Token = tokenHandler.WriteToken(token) };

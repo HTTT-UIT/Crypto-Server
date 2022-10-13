@@ -4,6 +4,8 @@ namespace API.Features.Shared.Services
 {
     public interface IUserService
     {
-        Task<List<UserEntity>> GetUser();
+        Task<List<UserEntity>> GetList();
+
+        Task<UserEntity> GetByCredential(string userName, string password);
     }
 }

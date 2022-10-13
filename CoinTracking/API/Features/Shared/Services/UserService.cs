@@ -13,7 +13,12 @@ namespace API.Features.Shared.Services
             _context = context;
         }
 
-        public async Task<List<UserEntity>> GetUser()
+        public async Task<UserEntity> GetByCredential(string userName, string password)
+        {
+            return new UserEntity();
+        }
+
+        public async Task<List<UserEntity>> GetList()
         {
             return await _context.Users.AsNoTracking().ToListAsync();
         }
