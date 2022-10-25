@@ -1,4 +1,5 @@
 ﻿using API.Features.Shared;
+using API.Features.Shared.Constants;
 using API.Features.Shared.Models;
 using API.Features.Shared.Services;
 using MediatR;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Features.Identity
 {
-    [Authorize]
+    [Authorize(Roles = UserRole.User)]
     [Route("api/[controller]")]
     public class IdentityController : ApiControllerBase
     {

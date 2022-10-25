@@ -1,5 +1,4 @@
-﻿using API.Features.Shared.Constants;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace API.Infrastructure.Entities
 {
@@ -12,6 +11,6 @@ namespace API.Infrastructure.Entities
 
         public string Password { get; set; } = string.Empty;
 
-        public UserRole Role { get; set; }
+        public string Role { get; set; } = string.Empty;
     }
 }

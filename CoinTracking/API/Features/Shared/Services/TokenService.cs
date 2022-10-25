@@ -1,5 +1,4 @@
 ﻿using API.Features.Shared.Models;
-using API.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,10 +20,13 @@ namespace API.Features.Shared.Services
         public async Task<Tokens?> Authenticate(User user)
         {
             var users = await _userService.GetList();
-            if (!users.Any(x => x.UserName == user.UserName && x.Password == user.Password))
+            var matchUsers = users.Where(x => x.UserName == user.UserName && x.Password == user.Password);
+            if (!matchUsers.Any())
             {
                 return null;
             }
+
+            var logUser = matchUsers.First();
 
             // Generate JSON Web Token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -33,8 +35,8 @@ namespace API.Features.Shared.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Role, "1")
+                    new Claim(ClaimTypes.Name, logUser.UserName),
+                    new Claim(ClaimTypes.Role, logUser.Role)
                 }),
                 Issuer = _iconfiguration["Jwt:Issuer"],
                 Audience = _iconfiguration["Jwt:Audience"],
