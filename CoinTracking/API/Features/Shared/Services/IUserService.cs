@@ -4,6 +4,6 @@ namespace API.Features.Shared.Services
 {
     public interface IUserService
     {
-        Task<List<UserEntity>> GetUser();
+        Task<List<UserEntity>> GetList();
     }
 }
