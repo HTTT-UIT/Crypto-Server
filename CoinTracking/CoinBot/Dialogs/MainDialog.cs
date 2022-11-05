@@ -43,6 +43,12 @@ namespace CoinBot.Dialogs
             AddDialog(new BugReportDialog($"{nameof(MainDialog)}.bugReport", _stateService));
             AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService, _coinMarketCapApi));
             AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService));
+            AddDialog(new AbilitiesDialog($"{nameof(MainDialog)}.ability", _stateService));
+            AddDialog(new SpecifiyDialog($"{nameof(MainDialog)}.specify", _stateService));
+            AddDialog(new ThankDialog($"{nameof(MainDialog)}.thank", _stateService));
+            AddDialog(new PraiseDialog($"{nameof(MainDialog)}.praise", _stateService));
+            AddDialog(new DecryDialog($"{nameof(MainDialog)}.decry", _stateService));
+            AddDialog(new ByeDialog($"{nameof(MainDialog)}.bye", _stateService));
             AddDialog(new BugTypeDialog($"{nameof(MainDialog)}.bugType", _botservices));
             AddDialog(new CoinDialog($"{nameof(MainDialog)}.coin", _botservices, _coinMarketCapApi));
             AddDialog(new WaterfallDialog($"{nameof(MainDialog)}.mainFlow", waterfallSteps));
@@ -71,6 +77,18 @@ namespace CoinBot.Dialogs
                         return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.coin", null, cancellationToken);
                     case LuisModel.Intent.QueryHotCoinIntent:
                         return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.hotCoin", null, cancellationToken);
+                    case LuisModel.Intent.AskAbilityIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.ability", null, cancellationToken);
+                    case LuisModel.Intent.SpecifyCointIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.specify", null, cancellationToken);
+                    case LuisModel.Intent.ThankIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.thank", null, cancellationToken);
+                    case LuisModel.Intent.PraiseIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.praise", null, cancellationToken);
+                    case LuisModel.Intent.DecryIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.decry", null, cancellationToken);
+                    case LuisModel.Intent.ByeIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.bye", null, cancellationToken);
                     case LuisModel.Intent.QueryFavoriteCoinIntent:
                         return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.favoriteCoin", null, cancellationToken);
                     case LuisModel.Intent.NewBugReportIntent:
@@ -86,7 +104,7 @@ namespace CoinBot.Dialogs
                                 // Retrieve Bug Text
                                 var bugOuter = description.Bug?.FirstOrDefault();
                                 if (bugOuter != null)
-                                    userProfile.Bug = bugOuter[0] != null ? bugOuter[0] : userProfile.Bug;
+                                    userProfile.Bug = bugOuter != null ? bugOuter : userProfile.Bug;
                             }
 
                             // Retrieve Phone Number Text
