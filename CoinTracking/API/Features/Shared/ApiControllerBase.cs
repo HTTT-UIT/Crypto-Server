@@ -24,6 +24,11 @@ namespace API.Features.Shared
 
             var result = await _mediator.Send(request);
 
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             return ConvertToActionResult(result ?? throw new InvalidOperationException());
         }
 
