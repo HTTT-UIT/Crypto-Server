@@ -22,13 +22,19 @@ namespace Luis
 
         public enum Intent
         {
+            AskAbilityIntent,
+            ByeIntent,
+            DecryIntent,
             GreetingIntent,
             NewBugReportIntent,
             None,
+            PraiseIntent,
             QueryBugTypeIntent,
             QueryCoinIntent,
             QueryFavoriteCoinIntent,
-            QueryHotCoinIntent
+            QueryHotCoinIntent,
+            SpecifyCointIntent,
+            ThankIntent
         };
         [JsonProperty("intents")]
         public Dictionary<Intent, IntentScore> Intents;
@@ -50,7 +56,7 @@ namespace Luis
             }
             public class DescriptionClass
             {
-                public string[][] Bug;
+                public string[] Bug;
                 [JsonProperty("$instance")]
                 public _InstanceDescription _instance;
             }
@@ -108,6 +114,18 @@ namespace Luis
             }
             public HotCoin_MLClass[] HotCoin_ML;
 
+            public class _InstanceSpecifiedCoin_ML
+            {
+                public InstanceData[] Specify;
+            }
+            public class SpecifiedCoin_MLClass
+            {
+                public string[] Specify;
+                [JsonProperty("$instance")]
+                public _InstanceSpecifiedCoin_ML _instance;
+            }
+            public SpecifiedCoin_MLClass[] SpecifiedCoin_ML;
+
             // Instance
             public class _Instance
             {
@@ -123,6 +141,8 @@ namespace Luis
                 public InstanceData[] Hot;
                 public InstanceData[] HotCoin_ML;
                 public InstanceData[] PhoneNumber;
+                public InstanceData[] SpecifiedCoin_ML;
+                public InstanceData[] Specify;
                 public InstanceData[] datetime;
                 public InstanceData[] phonenumber;
             }
