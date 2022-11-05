@@ -16,6 +16,10 @@ namespace API.Features.Coins
         public Task<IActionResult> List(List.Query query)
             => HandleRequest(query);
 
+        [HttpGet("{id}")]
+        public Task<IActionResult> Get(Get.Query query)
+            => HandleRequest(query);
+
         [HttpPost]
         public Task<IActionResult> Create(Create.Command command)
             => HandleRequest(command);
