@@ -1,4 +1,5 @@
-﻿using API.Features.Blogs.Queries;
+﻿using API.Features.Blogs.Commands;
+using API.Features.Blogs.Queries;
 using API.Features.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,5 +19,9 @@ namespace API.Features.Blogs
         [HttpGet("{id}")]
         public Task<IActionResult> Get(Get.Query query)
             => HandleRequest(query);
+
+        [HttpPost]
+        public Task<IActionResult> Create(Create.Command command)
+            => HandleRequest(command);
     }
 }
