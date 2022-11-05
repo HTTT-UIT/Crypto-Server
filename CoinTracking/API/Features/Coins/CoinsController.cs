@@ -23,5 +23,13 @@ namespace API.Features.Coins
         [HttpPost]
         public Task<IActionResult> Create(Create.Command command)
             => HandleRequest(command);
+
+        [HttpPost("Favourite")]
+        public Task<IActionResult> Favourite(Favourite.Command command)
+            => HandleRequest(command);
+
+        [HttpGet("Favourite")]
+        public Task<IActionResult> ListFavourite(ListFavourite.Query query)
+             => HandleRequest(query);
     }
 }
