@@ -7,6 +7,7 @@ namespace API.Infrastructure.Entities
         public UserEntity()
         {
             this.Coins = new HashSet<CoinEntity>();
+            this.FollowBlogs = new HashSet<BlogEntity>();
         }
 
         public Guid Id { get; set; }
@@ -23,5 +24,7 @@ namespace API.Infrastructure.Entities
         public DateTime? Dob { get; set; }
 
         public virtual ICollection<CoinEntity> Coins { get; set; }
+
+        public virtual ICollection<BlogEntity> FollowBlogs { get; set; }
     }
 }
