@@ -17,6 +17,14 @@ namespace API.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MasterContext).Assembly);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany<CoinEntity>(s => s.ViewedCoin)
+                .WithMany(c => c.ViewedUsers)
+                .UsingEntity(cs =>
+                {
+                    cs.ToTable("UserView");
+                });
         }
     }
 }
