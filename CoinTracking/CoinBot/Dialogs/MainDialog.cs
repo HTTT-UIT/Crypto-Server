@@ -17,12 +17,14 @@ namespace CoinBot.Dialogs
         #region Variables
         private readonly StateService _stateService;
         private readonly BotServices _botservices;
+        private readonly CoinMarketCapApi _coinMarketCapApi;
         #endregion
 
-        public MainDialog(StateService stateService, BotServices botServices) : base(nameof(MainDialog))
+        public MainDialog(StateService stateService, BotServices botServices, CoinMarketCapApi coinMarketCapApi) : base(nameof(MainDialog))
         {
             _stateService = stateService ?? throw new System.ArgumentNullException(nameof(stateService));
             _botservices = botServices ?? throw new System.ArgumentNullException(nameof(botServices));
+            _coinMarketCapApi = coinMarketCapApi ?? throw new System.ArgumentNullException(nameof(coinMarketCapApi));
 
             InitializeWaterfallDialog();
         }
@@ -39,7 +41,16 @@ namespace CoinBot.Dialogs
             //Add Named Dialogs
             AddDialog(new GreetingDialog($"{nameof(MainDialog)}.greeting", _stateService));
             AddDialog(new BugReportDialog($"{nameof(MainDialog)}.bugReport", _stateService));
+            AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService, _coinMarketCapApi));
+            AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService));
+            AddDialog(new AbilitiesDialog($"{nameof(MainDialog)}.ability", _stateService));
+            AddDialog(new SpecifiyDialog($"{nameof(MainDialog)}.specify", _stateService));
+            AddDialog(new ThankDialog($"{nameof(MainDialog)}.thank", _stateService));
+            AddDialog(new PraiseDialog($"{nameof(MainDialog)}.praise", _stateService));
+            AddDialog(new DecryDialog($"{nameof(MainDialog)}.decry", _stateService));
+            AddDialog(new ByeDialog($"{nameof(MainDialog)}.bye", _stateService));
             AddDialog(new BugTypeDialog($"{nameof(MainDialog)}.bugType", _botservices));
+            AddDialog(new CoinDialog($"{nameof(MainDialog)}.coin", _botservices, _coinMarketCapApi));
             AddDialog(new WaterfallDialog($"{nameof(MainDialog)}.mainFlow", waterfallSteps));
             
 
@@ -49,11 +60,11 @@ namespace CoinBot.Dialogs
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // 4:08 6.12
             try
             {
                 // First, we use the dispatch model to determine which cognitive service (LUIS or QnA) to use.
                 var recognizerResult = await _botservices.Dispatch.RecognizeAsync<LuisModel>(stepContext.Context, cancellationToken);
+
 
                 // Top intent tell us which cognitive service to use.
                 var topIntent = recognizerResult.TopIntent();
@@ -62,6 +73,24 @@ namespace CoinBot.Dialogs
                 {
                     case LuisModel.Intent.GreetingIntent:
                         return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.greeting", null, cancellationToken);
+                    case LuisModel.Intent.QueryCoinIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.coin", null, cancellationToken);
+                    case LuisModel.Intent.QueryHotCoinIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.hotCoin", null, cancellationToken);
+                    case LuisModel.Intent.AskAbilityIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.ability", null, cancellationToken);
+                    case LuisModel.Intent.SpecifyCointIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.specify", null, cancellationToken);
+                    case LuisModel.Intent.ThankIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.thank", null, cancellationToken);
+                    case LuisModel.Intent.PraiseIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.praise", null, cancellationToken);
+                    case LuisModel.Intent.DecryIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.decry", null, cancellationToken);
+                    case LuisModel.Intent.ByeIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.bye", null, cancellationToken);
+                    case LuisModel.Intent.QueryFavoriteCoinIntent:
+                        return await stepContext.BeginDialogAsync($"{nameof(MainDialog)}.favoriteCoin", null, cancellationToken);
                     case LuisModel.Intent.NewBugReportIntent:
                         var userProfile = new UserProfile();
                         var bugReport = recognizerResult.Entities.BugReport_ML?.FirstOrDefault();
@@ -75,7 +104,7 @@ namespace CoinBot.Dialogs
                                 // Retrieve Bug Text
                                 var bugOuter = description.Bug?.FirstOrDefault();
                                 if (bugOuter != null)
-                                    userProfile.Bug = bugOuter[0] != null ? bugOuter[0] : userProfile.Bug;
+                                    userProfile.Bug = bugOuter != null ? bugOuter : userProfile.Bug;
                             }
 
                             // Retrieve Phone Number Text

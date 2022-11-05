@@ -12,5 +12,12 @@
             "Serious bug",
             "Other"
         };
+
+        public static readonly string[] Abilities = new string[]
+        {
+            "Theo dõi coin theo tên",
+            "Theo dõi coin hot",
+            "Theo dõi coin yêu thích"
+        };
     }
 }

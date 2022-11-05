@@ -48,7 +48,7 @@ namespace CoinBot.Dialogs
                 return await stepContext.PromptAsync($"{nameof(GreetingDialog)}.name",
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("What is your name?????")
+                    Prompt = MessageFactory.Text("Tên của bạn là gì?????")
                 }, cancellationToken);
             }
             else
@@ -65,12 +65,13 @@ namespace CoinBot.Dialogs
             {
                 // Set the name
                 userProfile.Name = (string)stepContext.Result;
+                userProfile.Id = stepContext.Context.Activity.From.Id;
 
                 // Save any state changes that might have occured during the turn
                 await _stateService.UserProfileAccessor.SetAsync(stepContext.Context, userProfile);
             }
 
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text(String.Format("Hi, {0}. How can I help you today?", userProfile.Name)), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text(String.Format("Chào {0}, bot có thể giúp gì cho bạn?", userProfile.Name)), cancellationToken);
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
     }
