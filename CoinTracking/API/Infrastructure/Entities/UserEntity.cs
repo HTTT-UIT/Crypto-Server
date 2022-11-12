@@ -7,7 +7,7 @@ namespace API.Infrastructure.Entities
         public UserEntity()
         {
             this.Coins = new HashSet<CoinEntity>();
-            //this.ViewedCoin = new HashSet<CoinEntity>();
+            this.ViewedCoin = new HashSet<CoinEntity>();
             this.FollowBlogs = new HashSet<BlogEntity>();
         }
 
@@ -26,7 +26,7 @@ namespace API.Infrastructure.Entities
 
         public virtual ICollection<CoinEntity> Coins { get; set; }
 
-        //public virtual ICollection<CoinEntity> ViewedCoin { get; set; }
+        public virtual ICollection<CoinEntity> ViewedCoin { get; set; }
 
         public virtual ICollection<BlogEntity> FollowBlogs { get; set; }
     }
