@@ -1,14 +1,15 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Infrastructure.Entities;
 using API.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace API.Features.Coins.Commands
+namespace API.Features.Blogs.Comment.Commands
 {
-    public class Favourite
+    public class DeleteComment
     {
         public class Handler : IRequestHandler<Command, OperationResult>
         {
@@ -21,23 +22,21 @@ namespace API.Features.Coins.Commands
 
             public async Task<OperationResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var coin = await _dbContext.Coins
-                    .Include(x => x.Users)
-                    .Where(x => x.Id == command.CoinId)
-                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-                var user = await _dbContext.Users.Where(x => x.Id == command.Request.UserId)
+                var blog = await _dbContext.Blogs
+                    .Where(x => x.Id == command.BlogId)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-                if (coin == null || user == null)
+                var comment = await _dbContext.Comments
+                    .Where(x => x.Id == command.Id)
+                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+                if (blog == null || comment == null)
                 {
                     return OperationResult.NotFound();
                 }
 
-                if (!coin.Users.Where(x => x.Id == command.Request.UserId).Any())
-                {
-                    coin.Users.Add(user);
-                    await _dbContext.SaveChangesAsync(cancellationToken);
-                }
+                _dbContext.Remove(comment);
+                await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
             }
@@ -47,17 +46,10 @@ namespace API.Features.Coins.Commands
         {
             [Required]
             [FromRoute]
-            public Guid CoinId { get; set; }
+            public int BlogId { get; set; }
 
-            [FromBody]
-            [Required]
-            public Request Request { get; set; } = default!;
-        }
-
-        public class Request
-        {
-            [Required]
-            public Guid UserId { get; set; }
+            [FromRoute]
+            public int Id { get; set; }
         }
     }
 }

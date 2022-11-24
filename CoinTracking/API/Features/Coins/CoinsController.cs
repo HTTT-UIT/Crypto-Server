@@ -24,7 +24,7 @@ namespace API.Features.Coins
         public Task<IActionResult> Create(Create.Command command)
             => HandleRequest(command);
 
-        [HttpPost("Favourite")]
+        [HttpPost("{coinId}/Favourite")]
         public Task<IActionResult> Favourite(Favourite.Command command)
             => HandleRequest(command);
 

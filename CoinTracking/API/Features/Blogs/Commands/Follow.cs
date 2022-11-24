@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Features.Coins.Commands
+namespace API.Features.Blogs.Commands
 {
-    public class Favourite
+    public class Follow
     {
         public class Handler : IRequestHandler<Command, OperationResult>
         {
@@ -21,21 +21,21 @@ namespace API.Features.Coins.Commands
 
             public async Task<OperationResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var coin = await _dbContext.Coins
-                    .Include(x => x.Users)
-                    .Where(x => x.Id == command.CoinId)
+                var blog = await _dbContext.Blogs
+                    .Include(x => x.FollowUsers)
+                    .Where(x => x.Id == command.Request.BlogId)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
                 var user = await _dbContext.Users.Where(x => x.Id == command.Request.UserId)
-                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+                    .FirstOrDefaultAsync();
 
-                if (coin == null || user == null)
+                if (blog == null || user == null)
                 {
                     return OperationResult.NotFound();
                 }
 
-                if (!coin.Users.Where(x => x.Id == command.Request.UserId).Any())
+                if (!blog.FollowUsers.Where(x => x.Id == command.Request.UserId).Any())
                 {
-                    coin.Users.Add(user);
+                    blog.FollowUsers.Add(user);
                     await _dbContext.SaveChangesAsync(cancellationToken);
                 }
 
@@ -45,10 +45,6 @@ namespace API.Features.Coins.Commands
 
         public class Command : BaseCommand, IRequest<OperationResult>
         {
-            [Required]
-            [FromRoute]
-            public Guid CoinId { get; set; }
-
             [FromBody]
             [Required]
             public Request Request { get; set; } = default!;
@@ -58,6 +54,7 @@ namespace API.Features.Coins.Commands
         {
             [Required]
             public Guid UserId { get; set; }
+            public int BlogId  { get; set; }
         }
     }
 }

@@ -4,6 +4,7 @@ using API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MasterContext))]
-    partial class MasterContextModelSnapshot : ModelSnapshot
+    [Migration("20221112154319_ViewedCoin")]
+    partial class ViewedCoin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,36 +61,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Coins");
-                });
-
-            modelBuilder.Entity("API.Infrastructure.Entities.CommentEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BlogId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CommentTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("API.Infrastructure.Entities.UserEntity", b =>
@@ -169,25 +141,6 @@ namespace API.Migrations
                     b.ToTable("CoinEntityUserEntity");
                 });
 
-            modelBuilder.Entity("API.Infrastructure.Entities.CommentEntity", b =>
-                {
-                    b.HasOne("API.Infrastructure.Entities.BlogEntity", "Blog")
-                        .WithMany("Comments")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Infrastructure.Entities.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Blog");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("API.Infrastructure.Entities.ViewedEntity", b =>
                 {
                     b.HasOne("API.Infrastructure.Entities.CoinEntity", "CoinViewed")
@@ -235,11 +188,6 @@ namespace API.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("API.Infrastructure.Entities.BlogEntity", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("API.Infrastructure.Entities.CoinEntity", b =>
