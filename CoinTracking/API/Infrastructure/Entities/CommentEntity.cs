@@ -14,8 +14,8 @@
 
         public DateTime CommentTime { get; set; }
 
-        public BlogEntity Blog { get; set; }
+        public virtual BlogEntity Blog { get; set; }
 
-        public UserEntity User { get; set; }
+        public virtual UserEntity User { get; set; }
     }
 }

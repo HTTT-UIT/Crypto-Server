@@ -31,9 +31,5 @@ namespace API.Features.Blogs
         [HttpPut]
         public Task<IActionResult> Update(Update.Command command)
             => HandleRequest(command);
-
-        [HttpPost("{blogId}/Comment")]
-        public Task<IActionResult> Comment(Comment.Command command)
-            => HandleRequest(command);
     }
 }

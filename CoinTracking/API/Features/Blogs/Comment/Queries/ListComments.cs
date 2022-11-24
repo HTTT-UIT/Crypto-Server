@@ -3,33 +3,30 @@ using API.Common.Queries;
 using API.Common.Result;
 using API.Features.Shared.Constants;
 using API.Infrastructure;
-using API.Infrastructure.Entities;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Features.Coins.Queries
+namespace API.Features.Blogs.Comment.Queries
 {
-    public class List
+    public class ListComments
     {
         public class Handler : IRequestHandler<Query, Response>
         {
             private readonly MasterContext _dbContext;
+            private readonly IMapper _mapper;
 
-            public Handler(MasterContext dbContext)
+            public Handler(MasterContext dbContext, IMapper mapper)
             {
                 _dbContext = dbContext;
+                _mapper = mapper;
             }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _dbContext.Coins.AsNoTracking();
+                var query = _dbContext.Comments.AsNoTracking();
 
                 var total = await query.CountAsync(cancellationToken);
-
-                if (!string.IsNullOrEmpty(request.Filter))
-                {
-                    query = query.Where(x => x.Name.ToLower().Contains(request.Filter.ToLower()));
-                }
 
                 if (!string.IsNullOrEmpty(request.SortBy))
                 {
@@ -39,13 +36,15 @@ namespace API.Features.Coins.Queries
                 }
 
                 var items = await query
-                    .Include(x=> x.Users)
+                    .Include(x => x.User)
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
 
+                var res = _mapper.Map<List<CommentViewModel>>(items);
+
                 return new Response
                 {
-                    Items = items,
+                    Items = res,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     TotalRow = total
@@ -55,11 +54,23 @@ namespace API.Features.Coins.Queries
 
         public class Query : OrderQuery, IRequest<Response>
         {
-            public string? Filter { get; set; }
         }
 
-        public class Response : PagedResult<CoinEntity>
+        public class Response : PagedResult<CommentViewModel>
         {
+        }
+
+        public class CommentViewModel
+        {
+            public int Id { get; set; }
+
+            public string Content { get; set; } = string.Empty;
+
+            public DateTime CommentTime { get; set; }
+
+            public Guid UserId { get; set; }
+
+            public string Username { get; set; } = string.Empty;
         }
     }
 }

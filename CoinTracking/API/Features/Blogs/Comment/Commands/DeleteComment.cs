@@ -1,15 +1,15 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
-using API.Infrastructure;
 using API.Infrastructure.Entities;
+using API.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace API.Features.Blogs.Commands
+namespace API.Features.Blogs.Comment.Commands
 {
-    public class Comment
+    public class DeleteComment
     {
         public class Handler : IRequestHandler<Command, OperationResult>
         {
@@ -26,25 +26,16 @@ namespace API.Features.Blogs.Commands
                     .Where(x => x.Id == command.BlogId)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-                var user = await _dbContext.Users
-                    .Where(x => x.Id == command.ProfileId)
+                var comment = await _dbContext.Comments
+                    .Where(x => x.Id == command.Id)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-                if (blog == null || user == null)
+                if (blog == null || comment == null)
                 {
                     return OperationResult.NotFound();
                 }
 
-                var comment = new CommentEntity()
-                {
-
-                    Content = command.Request.Content,
-                    CommentTime = DateTime.Now,
-                    User = user,
-                    Blog = blog
-                };
-
-                await _dbContext.AddAsync(comment, cancellationToken);
+                _dbContext.Remove(comment);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
@@ -57,14 +48,8 @@ namespace API.Features.Blogs.Commands
             [FromRoute]
             public int BlogId { get; set; }
 
-            [FromBody]
-            public Request Request { get; set; } = default!;
-        }
-
-        public class Request
-        {
-            [Required]
-            public string Content { get; set; } = string.Empty;
+            [FromRoute]
+            public int Id { get; set; }
         }
     }
 }
