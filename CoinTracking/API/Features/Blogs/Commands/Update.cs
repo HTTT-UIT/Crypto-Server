@@ -1,7 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
 using API.Infrastructure;
-using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -48,9 +47,8 @@ namespace API.Features.Blogs.Commands
             public Request Request { get; set; } = default!;
         }
 
-        [AutoMap(typeof(BlogEntity), ReverseMap = true)]
         public class Request
-        { 
+        {
             public int Id { get; set; }
 
             public string? Header { get; set; }
