@@ -1,14 +1,15 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
 using API.Infrastructure;
+using API.Infrastructure.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Features.Coins.Commands
+namespace API.Features.Blogs.Commands
 {
-    public class Favourite
+    public class Comment
     {
         public class Handler : IRequestHandler<Command, OperationResult>
         {
@@ -21,23 +22,30 @@ namespace API.Features.Coins.Commands
 
             public async Task<OperationResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var coin = await _dbContext.Coins
-                    .Include(x => x.Users)
-                    .Where(x => x.Id == command.CoinId)
-                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-                var user = await _dbContext.Users.Where(x => x.Id == command.Request.UserId)
+                var blog = await _dbContext.Blogs
+                    .Where(x => x.Id == command.BlogId)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-                if (coin == null || user == null)
+                var user = await _dbContext.Users
+                    .Where(x => x.Id == command.ProfileId)
+                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+                if (blog == null || user == null)
                 {
                     return OperationResult.NotFound();
                 }
 
-                if (!coin.Users.Where(x => x.Id == command.Request.UserId).Any())
+                var comment = new CommentEntity()
                 {
-                    coin.Users.Add(user);
-                    await _dbContext.SaveChangesAsync(cancellationToken);
-                }
+
+                    Content = command.Request.Content,
+                    CommentTime = DateTime.Now,
+                    User = user,
+                    Blog = blog
+                };
+
+                await _dbContext.AddAsync(comment, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
             }
@@ -47,17 +55,16 @@ namespace API.Features.Coins.Commands
         {
             [Required]
             [FromRoute]
-            public Guid CoinId { get; set; }
+            public int BlogId { get; set; }
 
             [FromBody]
-            [Required]
             public Request Request { get; set; } = default!;
         }
 
         public class Request
         {
             [Required]
-            public Guid UserId { get; set; }
+            public string Content { get; set; } = string.Empty;
         }
     }
 }

@@ -5,6 +5,7 @@
         public BlogEntity()
         {
             FollowUsers = new List<UserEntity>();
+            Comments = new List<CommentEntity>();
         }
 
         public int Id { get; set; }
@@ -16,5 +17,7 @@
         public Guid? AuthorId { get; set; }
 
         public virtual ICollection<UserEntity> FollowUsers { get; set; }
+
+        public virtual ICollection<CommentEntity> Comments { get; set; }
     }
 }

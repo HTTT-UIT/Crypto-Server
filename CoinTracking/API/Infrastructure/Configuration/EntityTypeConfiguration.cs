@@ -13,4 +13,14 @@ namespace API.Infrastructure.Configuration
                 .ValueGeneratedOnAdd();
         }
     }
+
+    public class CommentEntityTypeConfiguration : IEntityTypeConfiguration<CommentEntity>
+    {
+        public void Configure(EntityTypeBuilder<CommentEntity> builder)
+        {
+            builder.HasKey(x => x.Id);
+            builder.Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+        }
+    }
 }
