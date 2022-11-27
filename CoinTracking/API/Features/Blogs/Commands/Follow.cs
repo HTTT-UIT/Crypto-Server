@@ -54,7 +54,8 @@ namespace API.Features.Blogs.Commands
         {
             [Required]
             public Guid UserId { get; set; }
-            public int BlogId  { get; set; }
+
+            public int BlogId { get; set; }
         }
     }
 }

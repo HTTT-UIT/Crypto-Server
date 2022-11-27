@@ -15,6 +15,5 @@
         public virtual ICollection<UserEntity> Users { get; set; }
 
         public virtual ICollection<ViewedEntity> ViewedUsers { get; set; }
-
     }
 }

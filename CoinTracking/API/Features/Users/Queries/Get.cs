@@ -1,10 +1,9 @@
-﻿using API.Infrastructure.Entities;
-using API.Infrastructure;
+﻿using API.Infrastructure;
+using API.Infrastructure.Entities;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using System.ComponentModel.DataAnnotations;
 
 namespace API.Features.Users.Queries
 {

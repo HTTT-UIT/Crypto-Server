@@ -9,14 +9,11 @@
         }
 
         public DateTime ViewTime { get; set; }
-        
+
         public Guid UserId { get; set; }
         public virtual UserEntity UserViewed { get; set; }
 
         public Guid CoinId { get; set; }
         public virtual CoinEntity CoinViewed { get; set; }
-
-
-
     }
 }

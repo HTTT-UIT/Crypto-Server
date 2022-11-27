@@ -39,7 +39,7 @@ namespace API.Features.Coins.Queries
                 }
 
                 var items = await query
-                    .Include(x=> x.Users)
+                    .Include(x => x.Users)
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
 

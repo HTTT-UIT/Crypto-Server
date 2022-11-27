@@ -11,6 +11,10 @@ namespace API.Infrastructure.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(c => c.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.HasOne(x => x.Author)
+                .WithMany(o => o.Blogs)
+                .HasForeignKey(x => x.AuthorId);
         }
     }
 
@@ -21,6 +25,22 @@ namespace API.Infrastructure.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(c => c.Id)
                 .ValueGeneratedOnAdd();
+        }
+    }
+
+    public class ViewedEntityTypeConfiguration : IEntityTypeConfiguration<ViewedEntity>
+    {
+        public void Configure(EntityTypeBuilder<ViewedEntity> builder)
+        {
+            builder.HasKey(x => new { x.CoinId, x.UserId });
+            builder.HasOne(x => x.CoinViewed)
+                .WithMany(o => o.ViewedUsers)
+                .HasForeignKey(x => x.CoinId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.UserViewed)
+                .WithMany(o => o.ViewedCoin)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -16,6 +16,8 @@
 
         public Guid? AuthorId { get; set; }
 
+        public virtual UserEntity? Author { get; set; }
+
         public virtual ICollection<UserEntity> FollowUsers { get; set; }
 
         public virtual ICollection<CommentEntity> Comments { get; set; }

@@ -71,7 +71,7 @@ namespace API.Features.Users.Commands
             public string? Role { get; set; }
 
             public string? Name { get; set; }
-            
+
             public DateTime? Dob { get; set; }
         }
     }

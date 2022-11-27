@@ -1,12 +1,12 @@
-﻿using API.Common.Queries;
+﻿using API.Common.Extensions;
+using API.Common.Queries;
 using API.Common.Result;
 using API.Features.Shared.Constants;
-using API.Infrastructure.Entities;
 using API.Infrastructure;
+using API.Infrastructure.Entities;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using API.Common.Extensions;
-using AutoMapper;
 
 namespace API.Features.Users.Queries
 {

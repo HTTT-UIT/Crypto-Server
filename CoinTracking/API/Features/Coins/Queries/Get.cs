@@ -1,5 +1,5 @@
-﻿using API.Infrastructure.Entities;
-using API.Infrastructure;
+﻿using API.Infrastructure;
+using API.Infrastructure.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

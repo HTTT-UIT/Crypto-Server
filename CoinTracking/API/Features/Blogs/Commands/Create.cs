@@ -1,7 +1,7 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
-using API.Infrastructure.Entities;
 using API.Infrastructure;
+using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -52,8 +52,10 @@ namespace API.Features.Blogs.Commands
             [Required]
             [MinLength(1)]
             public string Title { get; set; } = string.Empty;
+
             [Required]
             public string Content { get; set; } = string.Empty;
+
             public Guid? AuthorId { get; set; }
         }
 

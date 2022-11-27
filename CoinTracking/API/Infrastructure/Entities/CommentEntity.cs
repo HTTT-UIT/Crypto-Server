@@ -2,7 +2,7 @@
 {
     public class CommentEntity
     {
-        public CommentEntity ()
+        public CommentEntity()
         {
             Blog = new BlogEntity();
             User = new UserEntity();
