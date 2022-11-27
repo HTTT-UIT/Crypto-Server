@@ -1,6 +1,6 @@
 ﻿namespace API.Infrastructure.Entities
 {
-    public class CoinEntity
+    public class CoinEntity : BaseEntity
     {
         public CoinEntity()
         {
