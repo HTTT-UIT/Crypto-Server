@@ -1,7 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
 using API.Infrastructure;
-using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

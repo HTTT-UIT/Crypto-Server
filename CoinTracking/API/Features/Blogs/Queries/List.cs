@@ -2,7 +2,7 @@
 using API.Common.Queries;
 using API.Common.Result;
 using API.Infrastructure;
-using API.Infrastructure.Entities;
+using API.Infrastructure.Entities.Common;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

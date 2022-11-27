@@ -1,6 +1,8 @@
-﻿namespace API.Infrastructure.Entities
+﻿using API.Infrastructure.Entities.Common;
+
+namespace API.Infrastructure.Entities
 {
-    public class TagEntity
+    public class TagEntity : SoftEntity
     {
         public TagEntity()
         {

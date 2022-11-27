@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using API.Infrastructure.Entities.Common;
 
 namespace API.Infrastructure.Entities
 {
