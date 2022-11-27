@@ -5,13 +5,15 @@ using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Resources;
 
 namespace API.Features.Blogs.Commands
 {
     public class Create
     {
-        public class Handler : IRequestHandler<Command, OperationResult<Response>>
+        public class Handler : BaseHandle, IRequestHandler<Command, OperationResult<Response>>
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
@@ -24,6 +26,15 @@ namespace API.Features.Blogs.Commands
 
             public async Task<OperationResult<Response>> Handle(Command command, CancellationToken cancellationToken)
             {
+                var author = await _dbContext.Users
+                    .Where(x => x.Id == command.Request.AuthorId)
+                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+                if (author == null)
+                {
+                    return OperationResult.BadRequest(Resource.AUTHOR_NOT_FOUND);
+                }
+
                 var blog = new BlogEntity
                 {
                     Header = command.Request.Title,
@@ -31,6 +42,7 @@ namespace API.Features.Blogs.Commands
                     AuthorId = command.Request.AuthorId,
                 };
 
+                BaseCreate(blog, command);
                 _dbContext.Add(blog);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 

@@ -1,6 +1,7 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
 using API.Infrastructure;
+using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace API.Features.Blogs.Commands
 {
     public class Update
     {
-        public class Handler : IRequestHandler<Command, OperationResult>
+        public class Handler : BaseHandle, IRequestHandler<Command, OperationResult>
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
@@ -34,6 +35,7 @@ namespace API.Features.Blogs.Commands
 
                 _mapper.Map(request, blog);
 
+                BaseUpdate(blog, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();

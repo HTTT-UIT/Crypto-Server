@@ -1,6 +1,6 @@
 ﻿namespace API.Infrastructure.Entities
 {
-    public class BlogEntity
+    public class BlogEntity : BaseEntity
     {
         public BlogEntity()
         {
