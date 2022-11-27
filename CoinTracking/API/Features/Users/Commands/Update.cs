@@ -11,7 +11,7 @@ namespace API.Features.Users.Commands
 {
     public class Update
     {
-        public class Handler : IRequestHandler<Command, OperationResult>
+        public class Handler : BaseHandle, IRequestHandler<Command, OperationResult>
         {
             private readonly MasterContext _dbContext;
 
@@ -48,6 +48,7 @@ namespace API.Features.Users.Commands
                     user.Password = Password.Hash(request.Password);
                 }
 
+                BaseUpdate(user, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();

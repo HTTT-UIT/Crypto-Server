@@ -65,6 +65,9 @@ namespace API.Features.Identity
                 Role = UserRole.User,
             };
 
+            newUser.CreatedBy = Resource.SYSTEM;
+            newUser.CreatedAt = DateTime.Now;
+
             await _context.AddAsync(newUser);
             await _context.SaveChangesAsync();
 

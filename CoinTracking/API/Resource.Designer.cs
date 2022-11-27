@@ -68,5 +68,14 @@ namespace API {
                 return ResourceManager.GetString("AUTHOR_NOT_FOUND", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        public static string SYSTEM {
+            get {
+                return ResourceManager.GetString("SYSTEM", resourceCulture);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MasterContext))]
-    partial class MasterContextModelSnapshot : ModelSnapshot
+    [Migration("20221127093059_Tracking_4")]
+    partial class Tracking_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,23 +134,6 @@ namespace API.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("API.Infrastructure.Entities.TagEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("API.Infrastructure.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -208,21 +193,6 @@ namespace API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Views");
-                });
-
-            modelBuilder.Entity("BlogEntityTagEntity", b =>
-                {
-                    b.Property<int>("BlogsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BlogsId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("BlogEntityTagEntity");
                 });
 
             modelBuilder.Entity("BlogEntityUserEntity", b =>
@@ -300,21 +270,6 @@ namespace API.Migrations
                     b.Navigation("CoinViewed");
 
                     b.Navigation("UserViewed");
-                });
-
-            modelBuilder.Entity("BlogEntityTagEntity", b =>
-                {
-                    b.HasOne("API.Infrastructure.Entities.BlogEntity", null)
-                        .WithMany()
-                        .HasForeignKey("BlogsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Infrastructure.Entities.TagEntity", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BlogEntityUserEntity", b =>

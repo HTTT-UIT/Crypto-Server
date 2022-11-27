@@ -15,6 +15,7 @@ namespace API.Infrastructure
         public DbSet<CoinEntity> Coins { get; set; } = default!;
         public DbSet<ViewedEntity> Views { get; set; } = default!;
         public DbSet<CommentEntity> Comments { get; set; } = default!;
+        public DbSet<TagEntity> Tags { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

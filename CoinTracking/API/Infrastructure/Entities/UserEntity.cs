@@ -2,7 +2,7 @@
 
 namespace API.Infrastructure.Entities
 {
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
         public UserEntity()
         {

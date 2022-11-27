@@ -6,6 +6,7 @@
         {
             FollowUsers = new List<UserEntity>();
             Comments = new List<CommentEntity>();
+            Tags = new List<TagEntity>();
         }
 
         public int Id { get; set; }
@@ -21,5 +22,7 @@
         public virtual ICollection<UserEntity> FollowUsers { get; set; }
 
         public virtual ICollection<CommentEntity> Comments { get; set; }
+
+        public virtual ICollection<TagEntity> Tags { get; set; }
     }
 }
