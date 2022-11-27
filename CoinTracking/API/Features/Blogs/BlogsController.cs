@@ -23,5 +23,13 @@ namespace API.Features.Blogs
         [HttpPost]
         public Task<IActionResult> Create(Create.Command command)
             => HandleRequest(command);
+
+        [HttpPost("Follow")]
+        public Task<IActionResult> Follow(Follow.Command command)
+             => HandleRequest(command);
+
+        [HttpPut]
+        public Task<IActionResult> Update(Update.Command command)
+            => HandleRequest(command);
     }
 }

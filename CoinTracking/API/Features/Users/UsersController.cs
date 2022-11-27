@@ -1,4 +1,5 @@
 ﻿using API.Features.Shared;
+using API.Features.Users.Commands;
 using API.Features.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,5 +19,9 @@ namespace API.Features.Users
         [HttpGet("{id}")]
         public Task<IActionResult> Get(Get.Query query)
             => HandleRequest(query);
+
+        [HttpPut]
+        public Task<IActionResult> Update(Update.Command command)
+            => HandleRequest(command);
     }
 }

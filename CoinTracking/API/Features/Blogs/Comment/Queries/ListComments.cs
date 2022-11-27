@@ -8,9 +8,9 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Features.Users.Queries
+namespace API.Features.Blogs.Comment.Queries
 {
-    public class List
+    public class ListComments
     {
         public class Handler : IRequestHandler<Query, Response>
         {
@@ -25,14 +25,9 @@ namespace API.Features.Users.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _dbContext.Users.AsNoTracking();
+                var query = _dbContext.Comments.AsNoTracking();
 
                 var total = await query.CountAsync(cancellationToken);
-
-                if (!string.IsNullOrEmpty(request.Filter))
-                {
-                    query = query.Where(x => (x.Name ?? string.Empty).ToLower().Contains(request.Filter.ToLower()));
-                }
 
                 if (!string.IsNullOrEmpty(request.SortBy))
                 {
@@ -42,12 +37,15 @@ namespace API.Features.Users.Queries
                 }
 
                 var items = await query
+                    .Include(x => x.User)
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
 
+                var res = _mapper.Map<List<CommentViewModel>>(items);
+
                 return new Response
                 {
-                    Items = _mapper.Map<List<ResponseItem>>(items),
+                    Items = res,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     TotalRow = total
@@ -57,20 +55,23 @@ namespace API.Features.Users.Queries
 
         public class Query : OrderQuery, IRequest<Response>
         {
-            public string? Filter { get; set; }
         }
 
-        public class Response : PagedResult<ResponseItem>
+        public class Response : PagedResult<CommentViewModel>
         {
         }
 
-        [AutoMap(typeof(UserEntity))]
-        public class ResponseItem
+        public class CommentViewModel : BaseEntity
         {
-            public Guid Id { get; set; }
-            public string UserName { get; set; } = string.Empty;
-            public string? Name { get; set; }
-            public DateTime? Dob { get; set; }
+            public int Id { get; set; }
+
+            public string Content { get; set; } = string.Empty;
+
+            public DateTime CommentTime { get; set; }
+
+            public Guid UserId { get; set; }
+
+            public string Username { get; set; } = string.Empty;
         }
     }
 }

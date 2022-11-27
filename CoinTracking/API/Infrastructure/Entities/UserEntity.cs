@@ -2,11 +2,14 @@
 
 namespace API.Infrastructure.Entities
 {
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
         public UserEntity()
         {
             this.Coins = new HashSet<CoinEntity>();
+            this.ViewedCoin = new HashSet<ViewedEntity>();
+            this.FollowBlogs = new HashSet<BlogEntity>();
+            this.Blogs = new HashSet<BlogEntity>();
         }
 
         public Guid Id { get; set; }
@@ -23,5 +26,11 @@ namespace API.Infrastructure.Entities
         public DateTime? Dob { get; set; }
 
         public virtual ICollection<CoinEntity> Coins { get; set; }
+
+        public virtual ICollection<ViewedEntity> ViewedCoin { get; set; }
+
+        public virtual ICollection<BlogEntity> FollowBlogs { get; set; }
+
+        public virtual ICollection<BlogEntity> Blogs { get; set; }
     }
 }
