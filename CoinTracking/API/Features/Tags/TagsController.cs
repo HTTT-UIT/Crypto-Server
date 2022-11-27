@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Features.Tags
 {
     [Route("api/[controller]")]
-    public class TagController : ApiControllerBase
+    public class TagsController : ApiControllerBase
     {
-        public TagController(IMediator mediator) : base(mediator)
+        public TagsController(IMediator mediator) : base(mediator)
         { }
 
         [HttpGet]

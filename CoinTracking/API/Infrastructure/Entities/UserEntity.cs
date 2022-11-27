@@ -11,6 +11,7 @@ namespace API.Infrastructure.Entities
             this.ViewedCoin = new HashSet<ViewedEntity>();
             this.FollowBlogs = new HashSet<BlogEntity>();
             this.Blogs = new HashSet<BlogEntity>();
+            this.Reports = new HashSet<ReportEntity>();
         }
 
         public Guid Id { get; set; }
@@ -33,5 +34,7 @@ namespace API.Infrastructure.Entities
         public virtual ICollection<BlogEntity> FollowBlogs { get; set; }
 
         public virtual ICollection<BlogEntity> Blogs { get; set; }
+
+        public virtual ICollection<ReportEntity> Reports { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace API.Infrastructure
         public DbSet<ViewedEntity> Views { get; set; } = default!;
         public DbSet<CommentEntity> Comments { get; set; } = default!;
         public DbSet<TagEntity> Tags { get; set; } = default!;
+        public DbSet<ReportEntity> Reports { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

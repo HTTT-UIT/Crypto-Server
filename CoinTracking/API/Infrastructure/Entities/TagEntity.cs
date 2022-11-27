@@ -2,7 +2,7 @@
 
 namespace API.Infrastructure.Entities
 {
-    public class TagEntity : SoftEntity
+    public class TagEntity : ISoftEntity
     {
         public TagEntity()
         {
@@ -14,5 +14,7 @@ namespace API.Infrastructure.Entities
         public string Title { get; set; } = string.Empty;
 
         public virtual ICollection<BlogEntity> Blogs { get; set; }
+
+        public bool Deleted { get; set; }
     }
 }

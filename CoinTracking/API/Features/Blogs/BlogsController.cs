@@ -31,5 +31,9 @@ namespace API.Features.Blogs
         [HttpPut]
         public Task<IActionResult> Update(Update.Command command)
             => HandleRequest(command);
+
+        [HttpDelete("{id}")]
+        public Task<IActionResult> Delete(Delete.Command command)
+            => HandleRequest(command);
     }
 }

@@ -16,9 +16,15 @@ namespace API.Common.Commands
             entity.LastUpdatedAt = DateTime.Now;
         }
 
-        public void BaseDelete<T1>(T1 entity) where T1 : SoftEntity
+        public void BaseDelete<T1>(T1 entity) where T1 : ISoftEntity
         {
             entity.Deleted = true;
+        }
+
+        public void BaseDelete<T1, T2>(T1 entity, T2 command) where T1 : BaseEntity, ISoftEntity where T2 : BaseCommand
+        {
+            entity.Deleted = true;
+            BaseUpdate(entity, command);
         }
     }
 }

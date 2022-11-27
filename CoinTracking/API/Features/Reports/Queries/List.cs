@@ -1,13 +1,14 @@
-﻿using API.Common.Extensions;
-using API.Common.Queries;
+﻿using API.Common.Queries;
 using API.Common.Result;
-using API.Infrastructure;
 using API.Infrastructure.Entities.Common;
+using API.Infrastructure;
 using AutoMapper;
 using MediatR;
+using API.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using API.Common.Extensions;
 
-namespace API.Features.Blogs.Queries
+namespace API.Features.Reports.Queries
 {
     public class List
     {
@@ -24,16 +25,14 @@ namespace API.Features.Blogs.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _context.Blogs
-                    .Include(i => i.Author)
-                    .Include(i => i.FollowUsers)
-                    .Include(i => i.Tags)
-                    .FilterDeleted()
+                var query = _context.Reports
+                    .Include(i => i.UserReport)
+                    .Include(i => i.BlogReport)
                     .AsNoTracking();
 
-                if (request.TagIds != null && request.TagIds.Any())
+                if (request.Statuses != null && request.Statuses.Any())
                 {
-                    query = query.Where(i => i.Tags.Any(o => request.TagIds.Any(t => o.Id == t)));
+                    query = query.Where(i => request.Statuses.Contains(i.Status));
                 }
 
                 var total = await query.CountAsync(cancellationToken);
@@ -56,35 +55,43 @@ namespace API.Features.Blogs.Queries
 
         public class Query : PageQuery, IRequest<Response>
         {
-            public List<int>? TagIds { get; set; }
+            public List<string>? Statuses { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>
         {
         }
 
+        [AutoMap(typeof(ReportEntity))]
         public class ResponseItem : BaseEntity
         {
             public int Id { get; set; }
 
-            public string Header { get; set; } = string.Empty;
+            public string Reason { get; set; } = string.Empty;
 
             public string Content { get; set; } = string.Empty;
 
-            public string AuthorName { get; set; } = string.Empty;
+            public string Status { get; set; } = string.Empty;
 
-            public int TotalFollower { get; set; }
+            public Blog BlogReport { get; set; } = new();
 
-            public List<Tag> Tags { get; set; } = new();
-
-            public bool Deleted { get; set; }
+            public User UserReport { get; set; } = new();
         }
 
-        public class Tag
+        [AutoMap(typeof(BlogEntity))]
+        public class Blog
         {
             public int Id { get; set; }
 
-            public string Title { get; set; } = string.Empty;
+            public string Header { get; set; } = string.Empty;
+        }
+
+        [AutoMap(typeof(UserEntity))]
+        public class User
+        {
+            public Guid Id { get; set; }
+
+            public string Name { get; set; } = string.Empty;
         }
     }
 }
