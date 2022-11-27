@@ -11,7 +11,7 @@ namespace API.Features.Blogs.Comment.Commands
 {
     public class AddComment
     {
-        public class Handler : IRequestHandler<Command, OperationResult>
+        public class Handler : BaseHandle, IRequestHandler<Command, OperationResult>
         {
             private readonly MasterContext _dbContext;
 
@@ -43,6 +43,7 @@ namespace API.Features.Blogs.Comment.Commands
                     Blog = blog
                 };
 
+                BaseCreate(comment, command);
                 await _dbContext.AddAsync(comment, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 

@@ -1,4 +1,5 @@
 ﻿using API.Infrastructure;
+using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace API.Features.Blogs.Queries
             public int Id { get; set; }
         }
 
-        public class Response
+        public class Response : BaseEntity
         {
             public int Id { get; set; }
 

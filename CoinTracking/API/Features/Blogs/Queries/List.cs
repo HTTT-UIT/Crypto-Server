@@ -2,6 +2,7 @@
 using API.Common.Queries;
 using API.Common.Result;
 using API.Infrastructure;
+using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +55,7 @@ namespace API.Features.Blogs.Queries
         {
         }
 
-        public class ResponseItem
+        public class ResponseItem : BaseEntity
         {
             public int Id { get; set; }
 

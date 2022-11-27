@@ -1,6 +1,6 @@
 ﻿namespace API.Infrastructure.Entities
 {
-    public class CommentEntity
+    public class CommentEntity : BaseEntity
     {
         public CommentEntity()
         {
