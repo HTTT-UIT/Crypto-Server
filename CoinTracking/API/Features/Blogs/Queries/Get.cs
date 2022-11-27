@@ -25,6 +25,7 @@ namespace API.Features.Blogs.Queries
                 var item = await _context.Blogs
                     .Include(i => i.FollowUsers)
                     .Include(i => i.Author)
+                    .Include(i => i.Tags)
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
@@ -51,6 +52,15 @@ namespace API.Features.Blogs.Queries
             public string AuthorName { get; set; } = string.Empty;
 
             public int TotalFollower { get; set; }
+
+            public List<Tag> Tags { get; set; } = new();
+        }
+
+        public class Tag
+        {
+            public int Id { get; set; }
+
+            public string Title { get; set; } = string.Empty;
         }
     }
 }

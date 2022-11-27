@@ -26,8 +26,10 @@ namespace API.Features.Blogs.Commands
 
             public async Task<OperationResult<Response>> Handle(Command command, CancellationToken cancellationToken)
             {
+                var request = command.Request;
+
                 var author = await _dbContext.Users
-                    .Where(x => x.Id == command.Request.AuthorId)
+                    .Where(x => x.Id == request.AuthorId)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
                 if (author == null)
@@ -37,10 +39,22 @@ namespace API.Features.Blogs.Commands
 
                 var blog = new BlogEntity
                 {
-                    Header = command.Request.Title,
-                    Content = command.Request.Content,
-                    AuthorId = command.Request.AuthorId,
+                    Header = request.Title,
+                    Content = request.Content,
+                    AuthorId = request.AuthorId,
                 };
+
+                if (request.TagIds != null && request.TagIds.Any())
+                {
+                    foreach (var tagId in request.TagIds)
+                    {
+                        var tag = await _dbContext.Tags.FindAsync(tagId);
+                        if (tag != null)
+                        {
+                            blog.Tags.Add(tag);
+                        }
+                    }
+                }
 
                 BaseCreate(blog, command);
                 _dbContext.Add(blog);
@@ -69,6 +83,8 @@ namespace API.Features.Blogs.Commands
             public string Content { get; set; } = string.Empty;
 
             public Guid? AuthorId { get; set; }
+
+            public List<int>? TagIds { get; set; }
         }
 
         [AutoMap(typeof(BlogEntity))]

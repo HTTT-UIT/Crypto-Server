@@ -5,6 +5,7 @@ using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Features.Blogs.Commands
@@ -26,7 +27,9 @@ namespace API.Features.Blogs.Commands
             {
                 var request = command.Request;
 
-                var blog = await _dbContext.Blogs.FindAsync(new object?[] { command.Request.Id }, cancellationToken: cancellationToken);
+                var blog = await _dbContext.Blogs
+                    .Include(i => i.Tags)
+                    .FirstOrDefaultAsync(i => i.Id == command.Request.Id, cancellationToken: cancellationToken);
 
                 if (blog == null)
                 {
@@ -34,6 +37,29 @@ namespace API.Features.Blogs.Commands
                 }
 
                 _mapper.Map(request, blog);
+
+                if (request.TagIds != null && request.TagIds.Any())
+                {
+                    foreach (var tagId in request.TagIds)
+                    {
+                        var tag = await _dbContext.Tags.FindAsync(tagId);
+
+                        if (tag != null && !blog.Tags.Any(t => t.Id == tagId))
+                        {
+                            blog.Tags.Add(tag);
+                        }
+                    }
+
+                    var currentTags = blog.Tags.ToList();
+
+                    foreach (var tag in currentTags)
+                    {
+                        if (!request.TagIds.Contains(tag.Id))
+                        {
+                            blog.Tags.Remove(tag);
+                        }
+                    }
+                }
 
                 BaseUpdate(blog, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
@@ -56,6 +82,8 @@ namespace API.Features.Blogs.Commands
             public string? Header { get; set; }
 
             public string? Content { get; set; }
+
+            public List<int>? TagIds { get; set; }
         }
     }
 }
