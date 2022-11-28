@@ -69,7 +69,6 @@ namespace API
                 };
             });
 
-            services.AddAutoMapper(typeof(Startup));
             services.AddMediatR(typeof(Startup));
         }
 
