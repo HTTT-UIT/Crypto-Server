@@ -1,10 +1,9 @@
 ﻿namespace API.Features.Shared.Constants
 {
-    public static class UserRole
+    public enum UserRole
     {
-        public const string Admin = "ADMIN";
-        public const string User = "USER";
-        public const string Blogger = "BLOGGER";
-        public const string Guest = "GUEST";
+        Admin = 0,
+        User = 1,
+        Blogger = 2,
     }
 }

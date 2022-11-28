@@ -13,7 +13,7 @@ namespace API.Features.Shared.Services
             _context = context;
         }
 
-        public async Task<List<UserEntity>> GetList()
+        public async Task<List<UserEntity>> GetUser()
         {
             return await _context.Users.AsNoTracking().ToListAsync();
         }
