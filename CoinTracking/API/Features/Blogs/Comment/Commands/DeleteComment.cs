@@ -1,11 +1,10 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
-using API.Infrastructure.Entities;
 using API.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Features.Blogs.Comment.Commands
 {

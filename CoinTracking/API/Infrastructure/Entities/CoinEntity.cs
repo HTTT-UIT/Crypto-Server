@@ -1,6 +1,8 @@
-﻿namespace API.Infrastructure.Entities
+﻿using API.Infrastructure.Entities.Common;
+
+namespace API.Infrastructure.Entities
 {
-    public class CoinEntity
+    public class CoinEntity : BaseEntity
     {
         public CoinEntity()
         {
@@ -15,6 +17,5 @@
         public virtual ICollection<UserEntity> Users { get; set; }
 
         public virtual ICollection<ViewedEntity> ViewedUsers { get; set; }
-
     }
 }

@@ -3,6 +3,7 @@ using API.Common.Queries;
 using API.Common.Result;
 using API.Features.Shared.Constants;
 using API.Infrastructure;
+using API.Infrastructure.Entities.Common;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@ namespace API.Features.Blogs.Comment.Queries
         {
         }
 
-        public class CommentViewModel
+        public class CommentViewModel : BaseEntity
         {
             public int Id { get; set; }
 

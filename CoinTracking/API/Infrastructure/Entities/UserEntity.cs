@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using API.Infrastructure.Entities.Common;
 
 namespace API.Infrastructure.Entities
 {
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
         public UserEntity()
         {
             this.Coins = new HashSet<CoinEntity>();
             this.ViewedCoin = new HashSet<ViewedEntity>();
             this.FollowBlogs = new HashSet<BlogEntity>();
+            this.Blogs = new HashSet<BlogEntity>();
+            this.Reports = new HashSet<ReportEntity>();
         }
 
         public Guid Id { get; set; }
@@ -29,5 +32,9 @@ namespace API.Infrastructure.Entities
         public virtual ICollection<ViewedEntity> ViewedCoin { get; set; }
 
         public virtual ICollection<BlogEntity> FollowBlogs { get; set; }
+
+        public virtual ICollection<BlogEntity> Blogs { get; set; }
+
+        public virtual ICollection<ReportEntity> Reports { get; set; }
     }
 }

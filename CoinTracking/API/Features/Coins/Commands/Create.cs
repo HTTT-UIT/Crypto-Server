@@ -11,7 +11,7 @@ namespace API.Features.Coins.Commands
 {
     public class Create
     {
-        public class Handler : IRequestHandler<Command, OperationResult<Response>>
+        public class Handler : BaseHandle, IRequestHandler<Command, OperationResult<Response>>
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
@@ -29,6 +29,7 @@ namespace API.Features.Coins.Commands
                     Name = command.Request.Name,
                 };
 
+                BaseCreate(coin, command);
                 _dbContext.Add(coin);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 

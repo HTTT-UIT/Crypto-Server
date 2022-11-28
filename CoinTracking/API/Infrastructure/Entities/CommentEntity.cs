@@ -1,8 +1,10 @@
-﻿namespace API.Infrastructure.Entities
+﻿using API.Infrastructure.Entities.Common;
+
+namespace API.Infrastructure.Entities
 {
-    public class CommentEntity
+    public class CommentEntity : BaseEntity
     {
-        public CommentEntity ()
+        public CommentEntity()
         {
             Blog = new BlogEntity();
             User = new UserEntity();

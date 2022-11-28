@@ -4,13 +4,14 @@ using API.Infrastructure;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Features.Blogs.Commands
 {
     public class Update
     {
-        public class Handler : IRequestHandler<Command, OperationResult>
+        public class Handler : BaseHandle, IRequestHandler<Command, OperationResult>
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
@@ -25,7 +26,9 @@ namespace API.Features.Blogs.Commands
             {
                 var request = command.Request;
 
-                var blog = await _dbContext.Blogs.FindAsync(new object?[] { command.Request.Id }, cancellationToken: cancellationToken);
+                var blog = await _dbContext.Blogs
+                    .Include(i => i.Tags)
+                    .FirstOrDefaultAsync(i => i.Id == command.Request.Id, cancellationToken: cancellationToken);
 
                 if (blog == null)
                 {
@@ -34,6 +37,30 @@ namespace API.Features.Blogs.Commands
 
                 _mapper.Map(request, blog);
 
+                if (request.TagIds != null && request.TagIds.Any())
+                {
+                    foreach (var tagId in request.TagIds)
+                    {
+                        var tag = await _dbContext.Tags.FindAsync(tagId);
+
+                        if (tag != null && !blog.Tags.Any(t => t.Id == tagId))
+                        {
+                            blog.Tags.Add(tag);
+                        }
+                    }
+
+                    var currentTags = blog.Tags.ToList();
+
+                    foreach (var tag in currentTags)
+                    {
+                        if (!request.TagIds.Contains(tag.Id))
+                        {
+                            blog.Tags.Remove(tag);
+                        }
+                    }
+                }
+
+                BaseUpdate(blog, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
@@ -55,7 +82,7 @@ namespace API.Features.Blogs.Commands
 
             public string? Content { get; set; }
 
-            public Guid? AuthorId { get; set; }
+            public List<int>? TagIds { get; set; }
         }
     }
 }
