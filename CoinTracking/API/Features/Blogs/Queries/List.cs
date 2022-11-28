@@ -2,7 +2,8 @@
 using API.Common.Queries;
 using API.Common.Result;
 using API.Infrastructure;
-using API.Infrastructure.Entities;
+using API.Infrastructure.Entities.Common;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,15 +14,27 @@ namespace API.Features.Blogs.Queries
         public class Handler : IRequestHandler<Query, Response>
         {
             private readonly MasterContext _context;
+            private readonly IMapper _mapper;
 
-            public Handler(MasterContext context)
+            public Handler(MasterContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _context.Blogs.AsNoTracking();
+                var query = _context.Blogs
+                    .Include(i => i.Author)
+                    .Include(i => i.FollowUsers)
+                    .Include(i => i.Tags)
+                    .FilterDeleted()
+                    .AsNoTracking();
+
+                if (request.TagIds != null && request.TagIds.Any())
+                {
+                    query = query.Where(i => i.Tags.Any(o => request.TagIds.Any(t => o.Id == t)));
+                }
 
                 var total = await query.CountAsync(cancellationToken);
 
@@ -29,9 +42,11 @@ namespace API.Features.Blogs.Queries
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
 
+                var result = _mapper.Map<List<ResponseItem>>(items);
+
                 return new Response
                 {
-                    Items = items,
+                    Items = result,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     TotalRow = total
@@ -41,10 +56,35 @@ namespace API.Features.Blogs.Queries
 
         public class Query : PageQuery, IRequest<Response>
         {
+            public List<int>? TagIds { get; set; }
         }
 
-        public class Response : PagedResult<BlogEntity>
+        public class Response : PagedResult<ResponseItem>
         {
+        }
+
+        public class ResponseItem : BaseEntity
+        {
+            public int Id { get; set; }
+
+            public string Header { get; set; } = string.Empty;
+
+            public string Content { get; set; } = string.Empty;
+
+            public string AuthorName { get; set; } = string.Empty;
+
+            public int TotalFollower { get; set; }
+
+            public List<Tag> Tags { get; set; } = new();
+
+            public bool Deleted { get; set; }
+        }
+
+        public class Tag
+        {
+            public int Id { get; set; }
+
+            public string Title { get; set; } = string.Empty;
         }
     }
 }

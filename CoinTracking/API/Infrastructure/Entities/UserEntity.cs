@@ -1,10 +1,19 @@
-﻿using API.Features.Shared.Constants;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using API.Infrastructure.Entities.Common;
 
 namespace API.Infrastructure.Entities
 {
-    public class UserEntity
+    public class UserEntity : BaseEntity
     {
+        public UserEntity()
+        {
+            this.Coins = new HashSet<CoinEntity>();
+            this.ViewedCoin = new HashSet<ViewedEntity>();
+            this.FollowBlogs = new HashSet<BlogEntity>();
+            this.Blogs = new HashSet<BlogEntity>();
+            this.Reports = new HashSet<ReportEntity>();
+        }
+
         public Guid Id { get; set; }
 
         [MaxLength(100)]
@@ -12,6 +21,20 @@ namespace API.Infrastructure.Entities
 
         public string Password { get; set; } = string.Empty;
 
-        public UserRole Role { get; set; }
+        public string Role { get; set; } = string.Empty;
+
+        public string? Name { get; set; }
+
+        public DateTime? Dob { get; set; }
+
+        public virtual ICollection<CoinEntity> Coins { get; set; }
+
+        public virtual ICollection<ViewedEntity> ViewedCoin { get; set; }
+
+        public virtual ICollection<BlogEntity> FollowBlogs { get; set; }
+
+        public virtual ICollection<BlogEntity> Blogs { get; set; }
+
+        public virtual ICollection<ReportEntity> Reports { get; set; }
     }
 }
