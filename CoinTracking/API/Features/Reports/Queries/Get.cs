@@ -1,11 +1,12 @@
-﻿using API.Infrastructure;
-using API.Infrastructure.Entities.Common;
+﻿using API.Infrastructure.Entities.Common;
+using API.Infrastructure;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using API.Infrastructure.Entities;
 
-namespace API.Features.Blogs.Queries
+namespace API.Features.Reports.Queries
 {
     public class Get
     {
@@ -22,10 +23,9 @@ namespace API.Features.Blogs.Queries
 
             public async Task<Response?> Handle(Query request, CancellationToken cancellationToken)
             {
-                var item = await _context.Blogs
-                    .Include(i => i.FollowUsers)
-                    .Include(i => i.Author)
-                    .Include(i => i.Tags)
+                var item = await _context.Reports
+                    .Include(i => i.BlogReport)
+                    .Include(i => i.UserReport)
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
@@ -41,28 +41,36 @@ namespace API.Features.Blogs.Queries
             public int Id { get; set; }
         }
 
+        [AutoMap(typeof(ReportEntity))]
         public class Response : BaseEntity
         {
             public int Id { get; set; }
 
-            public string Header { get; set; } = string.Empty;
+            public string Reason { get; set; } = string.Empty;
 
             public string Content { get; set; } = string.Empty;
 
-            public string AuthorName { get; set; } = string.Empty;
+            public string Status { get; set; } = string.Empty;
 
-            public int TotalFollower { get; set; }
+            public Blog BlogReport { get; set; } = new();
 
-            public List<Tag> Tags { get; set; } = new();
-
-            public bool Deleted { get; set; }
+            public User UserReport { get; set; } = new();
         }
 
-        public class Tag
+        [AutoMap(typeof(BlogEntity))]
+        public class Blog
         {
             public int Id { get; set; }
 
-            public string Title { get; set; } = string.Empty;
+            public string Header { get; set; } = string.Empty;
+        }
+
+        [AutoMap(typeof(UserEntity))]
+        public class User
+        {
+            public Guid Id { get; set; }
+
+            public string Name { get; set; } = string.Empty;
         }
     }
 }

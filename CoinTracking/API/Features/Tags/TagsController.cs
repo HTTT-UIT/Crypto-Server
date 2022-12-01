@@ -1,15 +1,15 @@
-﻿using API.Features.Blogs.Commands;
-using API.Features.Blogs.Queries;
-using API.Features.Shared;
+﻿using API.Features.Shared;
+using API.Features.Tags.Commands;
+using API.Features.Tags.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Features.Blogs
+namespace API.Features.Tags
 {
     [Route("api/[controller]")]
-    public class BlogsController : ApiControllerBase
+    public class TagsController : ApiControllerBase
     {
-        public BlogsController(IMediator mediator) : base(mediator)
+        public TagsController(IMediator mediator) : base(mediator)
         { }
 
         [HttpGet]
@@ -22,14 +22,6 @@ namespace API.Features.Blogs
 
         [HttpPost]
         public Task<IActionResult> Create(Create.Command command)
-            => HandleRequest(command);
-
-        [HttpPost("Follow")]
-        public Task<IActionResult> Follow(Follow.Command command)
-             => HandleRequest(command);
-
-        [HttpPut]
-        public Task<IActionResult> Update(Update.Command command)
             => HandleRequest(command);
 
         [HttpDelete("{id}")]

@@ -28,6 +28,16 @@ namespace API.Infrastructure.Configuration
         }
     }
 
+    public class ReportEntityTypeConfiguration : IEntityTypeConfiguration<ReportEntity>
+    {
+        public void Configure(EntityTypeBuilder<ReportEntity> builder)
+        {
+            builder.HasKey(x => x.Id);
+            builder.Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+        }
+    }
+
     public class ViewedEntityTypeConfiguration : IEntityTypeConfiguration<ViewedEntity>
     {
         public void Configure(EntityTypeBuilder<ViewedEntity> builder)

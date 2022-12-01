@@ -1,6 +1,8 @@
-﻿namespace API.Infrastructure.Entities
+﻿using API.Infrastructure.Entities.Common;
+
+namespace API.Infrastructure.Entities
 {
-    public class TagEntity
+    public class TagEntity : ISoftEntity
     {
         public TagEntity()
         {
@@ -12,5 +14,7 @@
         public string Title { get; set; } = string.Empty;
 
         public virtual ICollection<BlogEntity> Blogs { get; set; }
+
+        public bool Deleted { get; set; }
     }
 }

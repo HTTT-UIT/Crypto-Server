@@ -3,14 +3,14 @@ using API.Common.Queries;
 using API.Common.Result;
 using API.Features.Shared.Constants;
 using API.Infrastructure;
-using API.Infrastructure.Entities.Common;
+using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Features.Blogs.Comment.Queries
+namespace API.Features.Tags.Queries
 {
-    public class ListComments
+    public class List
     {
         public class Handler : IRequestHandler<Query, Response>
         {
@@ -25,9 +25,16 @@ namespace API.Features.Blogs.Comment.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _dbContext.Comments.AsNoTracking();
+                var query = _dbContext.Tags
+                    .AsNoTracking()
+                    .FilterDeleted();
 
                 var total = await query.CountAsync(cancellationToken);
+
+                if (!string.IsNullOrEmpty(request.Filter))
+                {
+                    query = query.Where(x => x.Title.ToLower().Contains(request.Filter.ToLower()));
+                }
 
                 if (!string.IsNullOrEmpty(request.SortBy))
                 {
@@ -36,16 +43,16 @@ namespace API.Features.Blogs.Comment.Queries
                         : query.OrderBy(request.SortBy);
                 }
 
-                var items = await query
-                    .Include(x => x.User)
+                var tags = await query
+                    .Include(x => x.Blogs)
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
 
-                var res = _mapper.Map<List<CommentViewModel>>(items);
+                var items = _mapper.Map<List<ResponseItem>>(tags);
 
                 return new Response
                 {
-                    Items = res,
+                    Items = items,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     TotalRow = total
@@ -55,23 +62,31 @@ namespace API.Features.Blogs.Comment.Queries
 
         public class Query : OrderQuery, IRequest<Response>
         {
+            public string? Filter { get; set; }
         }
 
-        public class Response : PagedResult<CommentViewModel>
+        public class Response : PagedResult<ResponseItem>
         {
         }
 
-        public class CommentViewModel : BaseEntity
+        [AutoMap(typeof(TagEntity))]
+        public class ResponseItem
         {
             public int Id { get; set; }
 
-            public string Content { get; set; } = string.Empty;
+            public string Title { get; set; } = string.Empty;
 
-            public DateTime CommentTime { get; set; }
+            public bool Deleted { get; set; }
 
-            public Guid UserId { get; set; }
+            public List<Blog> Blogs { get; set; } = new();
+        }
 
-            public string Username { get; set; } = string.Empty;
+        [AutoMap(typeof(BlogEntity))]
+        public class Blog
+        {
+            public int Id { get; set; }
+
+            public string Header { get; set; } = string.Empty;
         }
     }
 }
