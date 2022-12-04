@@ -33,11 +33,17 @@ namespace API.Features.Blogs.Commands
                     return OperationResult.NotFound();
                 }
 
-                if (!blog.FollowUsers.Where(x => x.Id == command.Request.UserId).Any())
+                if (blog.FollowUsers.Where(x => x.Id == command.Request.UserId).Any())
+                {
+                    blog.FollowUsers.Remove(user);
+                    
+                }
+                else
                 {
                     blog.FollowUsers.Add(user);
-                    await _dbContext.SaveChangesAsync(cancellationToken);
                 }
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
             }
