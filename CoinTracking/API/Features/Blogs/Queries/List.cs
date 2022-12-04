@@ -1,6 +1,7 @@
 ﻿using API.Common.Extensions;
 using API.Common.Queries;
 using API.Common.Result;
+using API.Features.Shared.Constants;
 using API.Infrastructure;
 using API.Infrastructure.Entities.Common;
 using AutoMapper;
@@ -38,6 +39,19 @@ namespace API.Features.Blogs.Queries
 
                 var total = await query.CountAsync(cancellationToken);
 
+                if (request.SortByFollow.HasValue && request.SortByFollow.Value)
+                {
+                    query = request.SortDir == SortDirection.Ascending
+                        ? query.OrderBy(i => i.FollowUsers.Count)
+                        : query.OrderByDescending(i => i.FollowUsers.Count);
+                }
+                else
+                {
+                    query = request.SortDir == SortDirection.Ascending
+                        ? query.OrderBy(i => i.Id)
+                        : query.OrderByDescending(i => i.Id);
+                }
+
                 var items = await query
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
@@ -57,6 +71,10 @@ namespace API.Features.Blogs.Queries
         public class Query : PageQuery, IRequest<Response>
         {
             public List<int>? TagIds { get; set; }
+
+            public bool? SortByFollow { get; set; }
+
+            public string? SortDir { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>

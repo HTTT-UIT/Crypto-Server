@@ -1,4 +1,5 @@
 ﻿using API.Infrastructure;
+using API.Infrastructure.Entities;
 using API.Infrastructure.Entities.Common;
 using AutoMapper;
 using MediatR;
@@ -56,6 +57,8 @@ namespace API.Features.Blogs.Queries
             public List<Tag> Tags { get; set; } = new();
 
             public bool Deleted { get; set; }
+
+            public List<FollowUser> FollowUsers { get; set; } = new();
         }
 
         public class Tag
@@ -63,6 +66,12 @@ namespace API.Features.Blogs.Queries
             public int Id { get; set; }
 
             public string Title { get; set; } = string.Empty;
+        }
+
+        [AutoMap(typeof(UserEntity))]
+        public class FollowUser
+        {
+            public Guid Id { get; set; }
         }
     }
 }
