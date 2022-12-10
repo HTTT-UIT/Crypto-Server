@@ -20,7 +20,7 @@ namespace API.Infrastructure.Entities
 
         public Guid? AuthorId { get; set; }
 
-        public string SubContent { get; set; } = string.Empty;
+        public string? SubContent { get; set; }
 
         public string? ImageUrl { get; set; } = string.Empty;
 

@@ -25,7 +25,8 @@ namespace API.Features.Blogs.Commands
 
             public async Task<OperationResult<Response>> Handle(Command command, CancellationToken cancellationToken)
             {
-                var request = command.Request;
+                //to prevent confuse
+                var request = command;
 
                 var author = await _dbContext.Users
                     .Where(x => x.Id == request.AuthorId)
@@ -41,6 +42,7 @@ namespace API.Features.Blogs.Commands
                     Header = request.Title,
                     Content = request.Content,
                     AuthorId = request.AuthorId,
+                    SubContent = request.SubContent
                 };
 
                 if (request.TagIds != null && request.TagIds.Any())
@@ -67,13 +69,6 @@ namespace API.Features.Blogs.Commands
 
         public class Command : BaseCommand, IRequest<OperationResult<Response>>
         {
-            [FromBody]
-            [Required]
-            public Request Request { get; set; } = default!;
-        }
-
-        public class Request
-        {
             [Required]
             [MinLength(1)]
             public string Title { get; set; } = string.Empty;
@@ -81,9 +76,13 @@ namespace API.Features.Blogs.Commands
             [Required]
             public string Content { get; set; } = string.Empty;
 
+            public string? SubContent { get; set; }
+
             public Guid? AuthorId { get; set; }
 
             public List<int>? TagIds { get; set; }
+
+            public IFormFile? Image { get; set; }
         }
 
         [AutoMap(typeof(BlogEntity))]
