@@ -37,6 +37,12 @@ namespace API.Features.Blogs.Queries
                     query = query.Where(i => i.Tags.Any(o => request.TagIds.Any(t => o.Id == t)));
                 }
 
+                if(request.AuthorId.HasValue && request.AuthorId.Value != Guid.Empty)
+                {
+                    query = query.Where(i => i.AuthorId.HasValue 
+                        && i.AuthorId.Value == request.AuthorId.Value);
+                }
+
                 var total = await query.CountAsync(cancellationToken);
 
                 if (request.SortByFollow.HasValue && request.SortByFollow.Value)
@@ -75,6 +81,8 @@ namespace API.Features.Blogs.Queries
             public bool? SortByFollow { get; set; }
 
             public string? SortDir { get; set; }
+
+            public Guid? AuthorId { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>
@@ -96,6 +104,10 @@ namespace API.Features.Blogs.Queries
             public List<Tag> Tags { get; set; } = new();
 
             public bool Deleted { get; set; }
+
+            public string SubContent { get; set; } = string.Empty;
+            
+            public string? ImageUrl { get; set; }
         }
 
         public class Tag

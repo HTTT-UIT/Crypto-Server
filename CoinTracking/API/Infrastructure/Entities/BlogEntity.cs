@@ -20,6 +20,10 @@ namespace API.Infrastructure.Entities
 
         public Guid? AuthorId { get; set; }
 
+        public string SubContent { get; set; } = string.Empty;
+
+        public string? ImageUrl { get; set; } = string.Empty;
+
         public virtual UserEntity? Author { get; set; }
 
         public virtual ICollection<UserEntity> FollowUsers { get; set; }

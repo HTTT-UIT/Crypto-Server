@@ -59,6 +59,10 @@ namespace API.Features.Blogs.Queries
             public bool Deleted { get; set; }
 
             public List<FollowUser> FollowUsers { get; set; } = new();
+
+            public string SubContent { get; set; } = string.Empty;
+
+            public string? ImageUrl { get; set; }
         }
 
         public class Tag
