@@ -14,6 +14,10 @@ namespace API.Infrastructure.Entities
 
         public string Name { get; set; } = string.Empty;
 
+        public string RefId { get; set; } = string.Empty;
+
+        public string Symbol { get; set; } = string.Empty;
+
         public virtual ICollection<UserEntity> Users { get; set; }
 
         public virtual ICollection<ViewedEntity> ViewedUsers { get; set; }

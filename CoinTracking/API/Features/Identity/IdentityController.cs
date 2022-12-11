@@ -5,6 +5,9 @@ using API.Features.Shared.Models;
 using API.Features.Shared.Services;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
+using Azure.Identity;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +21,19 @@ namespace API.Features.Identity
     {
         private readonly ITokenService _tokenService;
         private readonly MasterContext _context;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public IdentityController(IMediator mediator, ITokenService tokenService, MasterContext context) : base(mediator)
+        public IdentityController(IMediator mediator, ITokenService tokenService, MasterContext context, BlobServiceClient blobServiceClient) : base(mediator)
         {
             _tokenService = tokenService;
             _context = context;
+            _blobServiceClient = blobServiceClient;
         }
 
         [HttpGet]
         public string Public()
         {
-            return "The api to test identity";
+            return string.Empty;
         }
 
         [AllowAnonymous]

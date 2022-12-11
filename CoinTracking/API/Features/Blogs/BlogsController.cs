@@ -21,7 +21,7 @@ namespace API.Features.Blogs
             => HandleRequest(query);
 
         [HttpPost]
-        public Task<IActionResult> Create(Create.Command command)
+        public Task<IActionResult> Create([FromForm] Create.Command command)
             => HandleRequest(command);
 
         [HttpPost("Follow")]

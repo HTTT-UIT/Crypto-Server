@@ -27,6 +27,8 @@ namespace API.Features.Coins.Commands
                 var coin = new CoinEntity
                 {
                     Name = command.Request.Name,
+                    RefId = command.Request.RefId,
+                    Symbol = command.Request.Symbol,
                 };
 
                 BaseCreate(coin, command);
@@ -50,13 +52,23 @@ namespace API.Features.Coins.Commands
         {
             [MinLength(1)]
             public string Name { get; set; } = string.Empty;
+
+            [MinLength(1)]
+            public string RefId { get; set; } = string.Empty;
+
+            public string Symbol { get; set; } = string.Empty;
         }
 
         [AutoMap(typeof(CoinEntity))]
         public class Response
         {
             public Guid Id { get; set; }
+            
             public string Name { get; set; } = string.Empty;
+
+            public string RefId { get; set; } = string.Empty;
+
+            public string Symbol { get; set; } = string.Empty;
         }
     }
 }

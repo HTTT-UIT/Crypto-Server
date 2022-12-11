@@ -1,5 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Services;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
 using AutoMapper;
@@ -16,16 +17,18 @@ namespace API.Features.Blogs.Commands
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
-
-            public Handler(MasterContext dbContext, IMapper mapper)
+            private readonly IFileService _fileService;
+            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService)
             {
                 _dbContext = dbContext;
                 _mapper = mapper;
+                _fileService = fileService;
             }
 
             public async Task<OperationResult<Response>> Handle(Command command, CancellationToken cancellationToken)
             {
-                var request = command.Request;
+                //to prevent confuse
+                var request = command;
 
                 var author = await _dbContext.Users
                     .Where(x => x.Id == request.AuthorId)
@@ -41,7 +44,18 @@ namespace API.Features.Blogs.Commands
                     Header = request.Title,
                     Content = request.Content,
                     AuthorId = request.AuthorId,
+                    SubContent = request.SubContent
                 };
+
+                if(request.Image != null)
+                {
+                    using var mem = new MemoryStream();
+                    request.Image.CopyTo(mem);
+                    var extension = Path.GetExtension(request.Image.FileName);
+                    var imageName = Guid.NewGuid().ToString() + "." + extension;
+                    mem.Position = 0;
+                    blog.ImageUrl = await _fileService.UploadAsync(imageName, mem, cancellationToken);
+                }
 
                 if (request.TagIds != null && request.TagIds.Any())
                 {
@@ -67,13 +81,6 @@ namespace API.Features.Blogs.Commands
 
         public class Command : BaseCommand, IRequest<OperationResult<Response>>
         {
-            [FromBody]
-            [Required]
-            public Request Request { get; set; } = default!;
-        }
-
-        public class Request
-        {
             [Required]
             [MinLength(1)]
             public string Title { get; set; } = string.Empty;
@@ -81,9 +88,13 @@ namespace API.Features.Blogs.Commands
             [Required]
             public string Content { get; set; } = string.Empty;
 
+            public string? SubContent { get; set; }
+
             public Guid? AuthorId { get; set; }
 
             public List<int>? TagIds { get; set; }
+
+            public IFormFile? Image { get; set; }
         }
 
         [AutoMap(typeof(BlogEntity))]
@@ -96,6 +107,10 @@ namespace API.Features.Blogs.Commands
             public string Content { get; set; } = string.Empty;
 
             public Guid? AuthorId { get; set; }
+
+            public string? SubContent { get; set; }
+
+            public string? ImageUrl { get; set; } = string.Empty;
         }
     }
 }

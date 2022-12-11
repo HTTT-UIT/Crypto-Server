@@ -8,6 +8,8 @@ namespace API.Configurations
         {
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICoinService, CoinService>();
+            services.AddScoped<IFileService, FileService>();
             return services;
         }
     }
