@@ -5,7 +5,6 @@ using API.Infrastructure;
 using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +17,7 @@ namespace API.Features.Blogs.Commands
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
             private readonly IFileService _fileService;
+
             public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService)
             {
                 _dbContext = dbContext;
@@ -47,12 +47,12 @@ namespace API.Features.Blogs.Commands
                     SubContent = request.SubContent
                 };
 
-                if(request.Image != null)
+                if (request.Image != null)
                 {
                     using var mem = new MemoryStream();
                     request.Image.CopyTo(mem);
                     var extension = Path.GetExtension(request.Image.FileName);
-                    var imageName = Guid.NewGuid().ToString() + "." + extension;
+                    var imageName = Path.Combine(Guid.NewGuid().ToString(), extension);
                     mem.Position = 0;
                     blog.ImageUrl = await _fileService.UploadAsync(imageName, mem, cancellationToken);
                 }

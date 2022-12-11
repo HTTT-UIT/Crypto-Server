@@ -99,14 +99,18 @@ namespace API.Features.Blogs.Queries
 
             public string AuthorName { get; set; } = string.Empty;
 
+            public Guid AuthorId { get; set; }
+
+            public string? AuthorImageUrl { get; set; }
+
             public int TotalFollower { get; set; }
 
             public List<Tag> Tags { get; set; } = new();
 
             public bool Deleted { get; set; }
 
-            public string SubContent { get; set; } = string.Empty;
-            
+            public string? SubContent { get; set; }
+
             public string? ImageUrl { get; set; }
         }
 

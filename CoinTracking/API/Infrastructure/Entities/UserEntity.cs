@@ -27,6 +27,8 @@ namespace API.Infrastructure.Entities
 
         public DateTime? Dob { get; set; }
 
+        public string? ProfileImageUrl { get; set; }
+
         public virtual ICollection<CoinEntity> Coins { get; set; }
 
         public virtual ICollection<ViewedEntity> ViewedCoin { get; set; }

@@ -52,6 +52,10 @@ namespace API.Features.Blogs.Queries
 
             public string AuthorName { get; set; } = string.Empty;
 
+            public Guid AuthorId { get; set; }
+
+            public string? AuthorImageUrl { get; set; }
+
             public int TotalFollower { get; set; }
 
             public List<Tag> Tags { get; set; } = new();
@@ -60,7 +64,7 @@ namespace API.Features.Blogs.Queries
 
             public List<FollowUser> FollowUsers { get; set; } = new();
 
-            public string SubContent { get; set; } = string.Empty;
+            public string? SubContent { get; set; }
 
             public string? ImageUrl { get; set; }
         }
