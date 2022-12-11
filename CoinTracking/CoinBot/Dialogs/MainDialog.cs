@@ -42,7 +42,7 @@ namespace CoinBot.Dialogs
             AddDialog(new GreetingDialog($"{nameof(MainDialog)}.greeting", _stateService));
             AddDialog(new BugReportDialog($"{nameof(MainDialog)}.bugReport", _stateService));
             AddDialog(new HotCoinDialog($"{nameof(MainDialog)}.hotCoin", _stateService, _coinMarketCapApi));
-            AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService));
+            AddDialog(new FavoriteCoinDialog($"{nameof(MainDialog)}.favoriteCoin", _stateService, _coinMarketCapApi));
             AddDialog(new AbilitiesDialog($"{nameof(MainDialog)}.ability", _stateService));
             AddDialog(new SpecifiyDialog($"{nameof(MainDialog)}.specify", _stateService));
             AddDialog(new ThankDialog($"{nameof(MainDialog)}.thank", _stateService));
