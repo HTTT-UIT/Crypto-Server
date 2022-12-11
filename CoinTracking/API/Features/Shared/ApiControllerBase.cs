@@ -1,5 +1,6 @@
 ﻿using API.Common.Enums;
 using API.Common.Result;
+using API.Features.Shared.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using BadRequestResult = API.Common.Result.BadRequestResult;
 
 namespace API.Features.Shared
 {
-    [Consumes(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json, "multipart/form-data")]
     [Produces(MediaTypeNames.Application.Json)]
     public class ApiControllerBase : ControllerBase
     {

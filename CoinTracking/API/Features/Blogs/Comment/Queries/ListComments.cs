@@ -25,7 +25,8 @@ namespace API.Features.Blogs.Comment.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _dbContext.Comments.AsNoTracking();
+                var query = _dbContext.Comments.AsNoTracking()
+                    .Where(x => x.Blog.Id == request.BlogId);
 
                 var total = await query.CountAsync(cancellationToken);
 
@@ -55,6 +56,7 @@ namespace API.Features.Blogs.Comment.Queries
 
         public class Query : OrderQuery, IRequest<Response>
         {
+            public int BlogId { get; set; }
         }
 
         public class Response : PagedResult<CommentViewModel>

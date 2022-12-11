@@ -37,7 +37,8 @@ namespace API.Features.Shared.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, logUser.UserName),
-                    new Claim(ClaimTypes.Role, logUser.Role)
+                    new Claim(ClaimTypes.Role, logUser.Role),
+                    new Claim(ClaimTypes.PrimarySid, logUser.Id.ToString())
                 }),
                 Issuer = _iconfiguration["Jwt:Issuer"],
                 Audience = _iconfiguration["Jwt:Audience"],
