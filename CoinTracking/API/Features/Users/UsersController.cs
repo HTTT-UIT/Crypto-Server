@@ -23,5 +23,9 @@ namespace API.Features.Users
         [HttpPut]
         public Task<IActionResult> Update(Update.Command command)
             => HandleRequest(command);
+
+        [HttpPut("avatar")]
+        public Task<IActionResult> UpdateAvatar([FromForm]UpdateAvatar.Command command)
+            => HandleRequest(command);
     }
 }
