@@ -80,9 +80,9 @@ namespace CoinBot.Dialogs
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
 
-        private AdaptiveCard SendCard(JToken coin)
+        public AdaptiveCard SendCard(JToken coin)
         {
-            var data = _coinMarketCapApi.MakeAPICall(string.Format("/v2/cryptocurrency/info?slug={0}", coin["slug"]));
+            var data = _coinMarketCapApi.MakeAPICall(string.Format("/v2/cryptocurrency/info?symbol={0}", coin["symbol"]));
             var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
                 Body = new List<AdaptiveElement>
@@ -108,7 +108,7 @@ namespace CoinBot.Dialogs
                                                 {
                                                     new AdaptiveImage
                                                     {
-                                                        Url = new Uri(data["data"].First.First["logo"].ToString()),
+                                                        Url = new Uri(data["data"].First.First.First["logo"].ToString()),
                                                         Size = AdaptiveImageSize.Small
                                                     }
                                                 }
@@ -117,12 +117,12 @@ namespace CoinBot.Dialogs
                                     },
                                     new AdaptiveTextBlock
                                     {
-                                        Text = data["data"].First.First["name"].ToString(),
+                                        Text = data["data"].First.First.First["name"].ToString(),
                                         Weight = AdaptiveTextWeight.Bolder
                                     },
                                     new AdaptiveTextBlock
                                     {
-                                        Text = Translator.Translate(data["data"].First.First["description"].ToString()).Result,
+                                        Text = Translator.Translate(data["data"].First.First.First["description"].ToString()).Result,
                                         Wrap = true,
                                         Spacing = AdaptiveSpacing.None
                                     },
@@ -136,7 +136,7 @@ namespace CoinBot.Dialogs
                     new AdaptiveOpenUrlAction
                     {
                         Title ="Xem thêm",
-                        Url = new Uri("https://coinmarketcap.com/currencies/" + data["data"].First.First["slug"].ToString()),
+                        Url = new Uri("https://coinmarketcap.com/currencies/" + data["data"].First.First.First["slug"].ToString()),
                     }
                 }
             };
