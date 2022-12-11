@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Features.Identity
 {
-    //[Authorize(Roles = UserRole.User)]
+    [Authorize(Roles = UserRole.User)]
     [Route("api/[controller]")]
     public class IdentityController : ApiControllerBase
     {
@@ -31,30 +31,9 @@ namespace API.Features.Identity
         }
 
         [HttpGet]
-        public async Task<string> Public()
+        public string Public()
         {
-            var result = string.Empty;
-
-            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient("mycontainer");
-
-            // Create a local file in the ./data/ directory for uploading and downloading
-            string localPath = "D:\\OneDrive\\OneDrive - Trường ĐH CNTT - University of Information Technology\\Album\\Media";
-            Directory.CreateDirectory(localPath);
-            string fileName = "Avt-2.jpg";
-            string localFilePath = Path.Combine(localPath, fileName);
-
-            // Upload data from the local file
-            var uploadblobClient = containerClient.GetBlobClient(fileName);
-
-            await uploadblobClient.UploadAsync(localFilePath, true);
-
-            await foreach (BlobItem blobItem in containerClient.GetBlobsAsync())
-            {
-                var blobClient = containerClient.GetBlobClient(blobItem.Name);
-                result += blobClient.Uri.AbsoluteUri;
-            }
-
-            return result;
+            return string.Empty;
         }
 
         [AllowAnonymous]

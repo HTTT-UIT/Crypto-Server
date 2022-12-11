@@ -2,8 +2,8 @@
 {
     public interface IFileService
     {
-        Task<Stream> OpenReadAsync(string containerName, string objectId, CancellationToken cancellationToken = default);
+        Task<Stream> OpenReadAsync(string objectId, CancellationToken cancellationToken = default);
 
-        Task UploadAsync(string containerName, string objectId, Stream stream, CancellationToken cancellationToken = default);
+        Task<string> UploadAsync(string objectId, Stream stream, CancellationToken cancellationToken = default);
     }
 }

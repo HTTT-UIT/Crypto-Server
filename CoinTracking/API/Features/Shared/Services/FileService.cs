@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace API.Features.Shared.Services
 {
@@ -7,11 +8,13 @@ namespace API.Features.Shared.Services
         private readonly BlobServiceClient _client;
         private readonly object _lock = new();
 
+        private const string _container = "mycontainer";
+
         public FileService(BlobServiceClient client) => _client = client;
 
-        public Task<Stream> OpenReadAsync(string containerName, string blobName, CancellationToken cancellationToken = default)
+        public Task<Stream> OpenReadAsync(string blobName, CancellationToken cancellationToken = default)
         {
-            var containerClient = _client.GetBlobContainerClient(containerName);
+            var containerClient = _client.GetBlobContainerClient(_container);
             if (containerClient.Exists(cancellationToken))
             {
                 var blobClient = containerClient.GetBlobClient(blobName);
@@ -24,9 +27,9 @@ namespace API.Features.Shared.Services
             return Task.FromResult(Stream.Null);
         }
 
-        public Task UploadAsync(string containerName, string blobName, Stream stream, CancellationToken cancellationToken = default)
+        public async Task<string> UploadAsync(string blobName, Stream stream, CancellationToken cancellationToken = default)
         {
-            var containerClient = _client.GetBlobContainerClient(containerName);
+            var containerClient = _client.GetBlobContainerClient(_container);
             if (!containerClient.Exists(cancellationToken))
             {
                 lock (_lock)
@@ -37,7 +40,9 @@ namespace API.Features.Shared.Services
 
             var blobClient = containerClient.GetBlobClient(blobName);
 
-            return blobClient.UploadAsync(stream, cancellationToken);
+            await blobClient.UploadAsync(stream, cancellationToken);
+
+            return blobClient.Uri.AbsoluteUri;
         }
     }
 }
