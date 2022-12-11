@@ -1,5 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Services;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
 using AutoMapper;
@@ -16,11 +17,12 @@ namespace API.Features.Blogs.Commands
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
-
-            public Handler(MasterContext dbContext, IMapper mapper)
+            private readonly IFileService _fileService;
+            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService)
             {
                 _dbContext = dbContext;
                 _mapper = mapper;
+                _fileService = fileService;
             }
 
             public async Task<OperationResult<Response>> Handle(Command command, CancellationToken cancellationToken)
@@ -44,6 +46,16 @@ namespace API.Features.Blogs.Commands
                     AuthorId = request.AuthorId,
                     SubContent = request.SubContent
                 };
+
+                if(request.Image != null)
+                {
+                    using var mem = new MemoryStream();
+                    request.Image.CopyTo(mem);
+                    var extension = Path.GetExtension(request.Image.FileName);
+                    var imageName = Guid.NewGuid().ToString() + "." + extension;
+                    mem.Position = 0;
+                    blog.ImageUrl = await _fileService.UploadAsync(imageName, mem, cancellationToken);
+                }
 
                 if (request.TagIds != null && request.TagIds.Any())
                 {
@@ -95,6 +107,10 @@ namespace API.Features.Blogs.Commands
             public string Content { get; set; } = string.Empty;
 
             public Guid? AuthorId { get; set; }
+
+            public string? SubContent { get; set; }
+
+            public string? ImageUrl { get; set; } = string.Empty;
         }
     }
 }
