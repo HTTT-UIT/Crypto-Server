@@ -43,6 +43,11 @@ namespace API.Features.Blogs.Queries
                         && i.AuthorId.Value == request.AuthorId.Value);
                 }
 
+                if (request.FollowerId.HasValue && request.FollowerId.Value != Guid.Empty)
+                {
+                    query = query.Where(i => i.FollowUsers.Any(f => f.Id == request.FollowerId));
+                }
+
                 var total = await query.CountAsync(cancellationToken);
 
                 if (request.SortByFollow.HasValue && request.SortByFollow.Value)
@@ -83,6 +88,8 @@ namespace API.Features.Blogs.Queries
             public string? SortDir { get; set; }
 
             public Guid? AuthorId { get; set; }
+
+            public Guid? FollowerId { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>
