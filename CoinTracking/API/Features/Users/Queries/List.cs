@@ -68,9 +68,14 @@ namespace API.Features.Users.Queries
         public class ResponseItem
         {
             public Guid Id { get; set; }
+
             public string UserName { get; set; } = string.Empty;
+
             public string? Name { get; set; }
+
             public DateTime? Dob { get; set; }
+
+            public string? ProfileImageUrl { get; set; }
         }
     }
 }

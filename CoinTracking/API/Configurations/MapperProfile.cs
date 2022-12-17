@@ -36,7 +36,8 @@ namespace API.Configurations
         {
             CreateMap<CommentEntity, Features.Blogs.Comment.Queries.ListComments.CommentViewModel>()
                 .ForMember(d => d.UserId, opt => opt.MapFrom(s => s.User.Id))
-                .ForMember(d => d.Username, opt => opt.MapFrom(s => s.User.Name ?? string.Empty));
+                .ForMember(d => d.Username, opt => opt.MapFrom(s => s.User.Name ?? string.Empty))
+                .ForMember(d => d.ProfileImageUrl, opt => opt.MapFrom(s => s.User.ProfileImageUrl ?? string.Empty));
         }
 
         public void CreateTagMap()
