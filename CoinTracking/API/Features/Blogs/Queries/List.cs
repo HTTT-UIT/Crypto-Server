@@ -48,6 +48,11 @@ namespace API.Features.Blogs.Queries
                     query = query.Where(i => i.FollowUsers.Any(f => f.Id == request.FollowerId));
                 }
 
+                if (request.Header != null)
+                {
+                    query = query.Where(i => i.Header.ToLower().Contains(request.Header.ToLower()));
+                }
+
                 var total = await query.CountAsync(cancellationToken);
 
                 if (request.SortByFollow.HasValue && request.SortByFollow.Value)
@@ -90,6 +95,8 @@ namespace API.Features.Blogs.Queries
             public Guid? AuthorId { get; set; }
 
             public Guid? FollowerId { get; set; }
+
+            public string? Header { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>

@@ -4,8 +4,10 @@ using API.Common.Result;
 using API.Features.Shared.Constants;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Features.Coins.Queries
 {
@@ -14,10 +16,12 @@ namespace API.Features.Coins.Queries
         public class Handler : IRequestHandler<Query, Response>
         {
             private readonly MasterContext _dbContext;
+            private readonly IMapper _mapper;
 
-            public Handler(MasterContext dbContext)
+            public Handler(MasterContext dbContext, IMapper mapper)
             {
                 _dbContext = dbContext;
+                _mapper = mapper;
             }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
@@ -43,9 +47,11 @@ namespace API.Features.Coins.Queries
                     .Paginate(request)
                     .ToListAsync(cancellationToken);
 
+                var responseItems = _mapper.Map<List<Coin>>(items);
+
                 return new Response
                 {
-                    Items = items,
+                    Items = responseItems,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     TotalRow = total
@@ -58,8 +64,33 @@ namespace API.Features.Coins.Queries
             public string? Filter { get; set; }
         }
 
-        public class Response : PagedResult<CoinEntity>
+        public class Response : PagedResult<Coin>
         {
+
+        }
+
+        [AutoMap(typeof(CoinEntity))]
+        public class Coin
+        {
+            public Guid Id { get; set; }
+
+            public string Name { get; set; } = string.Empty;
+
+            public string RefId { get; set; } = string.Empty;
+
+            public string Symbol { get; set; } = string.Empty;
+
+            public List<User> Users { get; set; } = new();
+        }
+
+        [AutoMap(typeof(UserEntity))]
+        public class User
+        {
+            public Guid Id { get; set; }
+
+            public string? Name { get; set; }
+
+            public string? ProfileImageUrl { get; set; }
         }
     }
 }
