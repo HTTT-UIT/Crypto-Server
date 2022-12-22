@@ -67,6 +67,8 @@ namespace API.Features.Blogs.Queries
             public string? SubContent { get; set; }
 
             public string? ImageUrl { get; set; }
+
+            public int Status { get; set; }
         }
 
         public class Tag

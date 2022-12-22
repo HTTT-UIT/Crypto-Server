@@ -17,6 +17,7 @@ namespace API.Configurations
             CreateMap<Features.Blogs.Commands.Update.Command, BlogEntity>()
                 .ForMember(d => d.Header, opt => opt.Condition(s => !string.IsNullOrEmpty(s.Header)))
                 .ForMember(d => d.Content, opt => opt.Condition(s => !string.IsNullOrEmpty(s.Content)))
+                .ForMember(d => d.SubContent, opt => opt.Condition(s => !string.IsNullOrEmpty(s.SubContent)))
                 .ForMember(d => d.AuthorId, opt => opt.Ignore());
 
             CreateMap<BlogEntity, Features.Blogs.Queries.Get.Response>()

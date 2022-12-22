@@ -1,5 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Constants;
 using API.Features.Shared.Services;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
@@ -44,7 +45,8 @@ namespace API.Features.Blogs.Commands
                     Header = request.Title,
                     Content = request.Content,
                     AuthorId = request.AuthorId,
-                    SubContent = request.SubContent
+                    SubContent = request.SubContent,
+                    Status = BlogStatus.NEW,
                 };
 
                 if (request.Image != null)

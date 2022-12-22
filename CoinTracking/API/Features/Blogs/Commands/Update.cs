@@ -94,6 +94,8 @@ namespace API.Features.Blogs.Commands
             public string? SubContent { get; set; }
 
             public IFormFile? Image { get; set; }
+
+            public int Status { get; set; }
         }
     }
 }
