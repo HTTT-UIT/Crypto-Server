@@ -68,11 +68,7 @@ namespace API.Features.Blogs.Queries
                         : query.OrderByDescending(i => i.Id);
                 }
 
-                if (request.Status == null || !request.Status.Any())
-                {
-                    query = query.Where(i => i.Status == BlogStatus.ACCEPTED || i.Status == BlogStatus.WARNED);
-                }
-                else
+                if (request.Status != null && request.Status.Any())
                 {
                     query = query.Where(i => request.Status.Contains((int)i.Status));
                 }

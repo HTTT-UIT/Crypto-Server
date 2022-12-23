@@ -1,6 +1,7 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
 using API.Features.Shared.Constants;
+using API.Features.Shared.Models;
 using API.Features.Shared.Services;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
@@ -19,7 +20,7 @@ namespace API.Features.Blogs.Commands
             private readonly IMapper _mapper;
             private readonly IFileService _fileService;
 
-            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService)
+            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
                 _mapper = mapper;

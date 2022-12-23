@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Features.Tags.Commands
+namespace API.Features.Users.Commands
 {
     public class Delete
     {
@@ -22,15 +22,15 @@ namespace API.Features.Tags.Commands
 
             public async Task<OperationResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var tag = await _dbContext.Tags
+                var user = await _dbContext.Users
                     .FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
 
-                if (tag == null)
+                if (user == null)
                 {
                     return OperationResult.NotFound();
                 }
 
-                BaseDelete(tag);
+                BaseDelete(user, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
@@ -41,7 +41,7 @@ namespace API.Features.Tags.Commands
         {
             [Required]
             [FromRoute]
-            public int Id { get; set; }
+            public Guid Id { get; set; }
         }
     }
 }

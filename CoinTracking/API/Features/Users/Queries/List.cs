@@ -25,7 +25,8 @@ namespace API.Features.Users.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _dbContext.Users.AsNoTracking();
+                var query = _dbContext.Users.AsNoTracking()
+                    .FilterDeleted();
 
                 var total = await query.CountAsync(cancellationToken);
 

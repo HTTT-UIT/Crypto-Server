@@ -3,7 +3,7 @@ using API.Infrastructure.Entities.Common;
 
 namespace API.Infrastructure.Entities
 {
-    public class UserEntity : BaseEntity
+    public class UserEntity : BaseEntity, ISoftEntity
     {
         public UserEntity()
         {
@@ -28,6 +28,8 @@ namespace API.Infrastructure.Entities
         public DateTime? Dob { get; set; }
 
         public string? ProfileImageUrl { get; set; }
+
+        public bool Deleted { get; set; }
 
         public virtual ICollection<CoinEntity> Coins { get; set; }
 

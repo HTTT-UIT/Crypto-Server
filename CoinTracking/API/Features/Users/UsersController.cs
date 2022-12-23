@@ -27,5 +27,9 @@ namespace API.Features.Users
         [HttpPut("avatar")]
         public Task<IActionResult> UpdateAvatar([FromForm]UpdateAvatar.Command command)
             => HandleRequest(command);
+
+        [HttpDelete("{id}")]
+        public Task<IActionResult> Delete(Delete.Command command)
+            => HandleRequest(command);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using API.Features.Shared.Constants;
+using API.Features.Shared.Models;
 
 namespace API.Features.Reports.Commands
 {
@@ -16,7 +17,7 @@ namespace API.Features.Reports.Commands
         {
             private readonly MasterContext _dbContext;
 
-            public Handler(MasterContext dbContext)
+            public Handler(MasterContext dbContext, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
             }

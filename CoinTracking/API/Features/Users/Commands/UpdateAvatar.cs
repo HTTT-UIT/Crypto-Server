@@ -1,5 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Models;
 using API.Features.Shared.Services;
 using API.Infrastructure;
 using MediatR;
@@ -14,7 +15,7 @@ namespace API.Features.Users.Commands
             private readonly MasterContext _dbContext;
             private readonly IFileService _fileService;
 
-            public Handler(MasterContext dbContext, IFileService fileService)
+            public Handler(MasterContext dbContext, IFileService fileService, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
                 _fileService = fileService;

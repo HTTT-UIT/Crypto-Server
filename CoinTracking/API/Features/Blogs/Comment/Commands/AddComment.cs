@@ -1,5 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Models;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
 using MediatR;
@@ -15,7 +16,7 @@ namespace API.Features.Blogs.Comment.Commands
         {
             private readonly MasterContext _dbContext;
 
-            public Handler(MasterContext dbContext)
+            public Handler(MasterContext dbContext, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
             }

@@ -2,6 +2,7 @@
 using API.Common.Result;
 using API.Common.Utils;
 using API.Features.Shared.Constants;
+using API.Features.Shared.Models;
 using API.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace API.Features.Users.Commands
         {
             private readonly MasterContext _dbContext;
 
-            public Handler(MasterContext dbContext)
+            public Handler(MasterContext dbContext, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
             }
