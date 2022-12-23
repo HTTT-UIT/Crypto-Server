@@ -14,11 +14,10 @@ namespace API.Configurations
 
         public void CreateBlogMap()
         {
-            CreateMap<Features.Blogs.Commands.Update.Request, BlogEntity>()
+            CreateMap<Features.Blogs.Commands.Update.Command, BlogEntity>()
                 .ForMember(d => d.Header, opt => opt.Condition(s => !string.IsNullOrEmpty(s.Header)))
                 .ForMember(d => d.Content, opt => opt.Condition(s => !string.IsNullOrEmpty(s.Content)))
                 .ForMember(d => d.SubContent, opt => opt.Condition(s => !string.IsNullOrEmpty(s.SubContent)))
-                .ForMember(d => d.Status, opt => opt.Condition(s => s.Status != null))
                 .ForMember(d => d.AuthorId, opt => opt.Ignore());
 
             CreateMap<BlogEntity, Features.Blogs.Queries.Get.Response>()

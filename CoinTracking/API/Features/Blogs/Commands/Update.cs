@@ -28,11 +28,11 @@ namespace API.Features.Blogs.Commands
 
             public async Task<OperationResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var request = command.Request;
+                var request = command;
 
                 var blog = await _dbContext.Blogs
                     .Include(i => i.Tags)
-                    .FirstOrDefaultAsync(i => i.Id == command.Id, cancellationToken: cancellationToken);
+                    .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
 
                 if (blog == null)
                 {
@@ -84,15 +84,8 @@ namespace API.Features.Blogs.Commands
         public class Command : BaseCommand, IRequest<OperationResult>
         {
             [Required]
-            [FromRoute]
             public int Id { get; set; }
 
-            [FromBody]
-            public Request Request { get; set; } = new();
-        }
-
-        public class Request
-        {
             public string? Header { get; set; }
 
             public string? Content { get; set; }
@@ -103,7 +96,7 @@ namespace API.Features.Blogs.Commands
 
             public IFormFile? Image { get; set; }
 
-            public int? Status { get; set; }
+            public int Status { get; set; }
         }
     }
 }

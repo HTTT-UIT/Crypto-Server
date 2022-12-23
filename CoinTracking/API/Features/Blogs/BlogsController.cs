@@ -28,7 +28,7 @@ namespace API.Features.Blogs
         public Task<IActionResult> Follow(Follow.Command command)
              => HandleRequest(command);
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public Task<IActionResult> Update([FromForm]Update.Command command)
             => HandleRequest(command);
 
