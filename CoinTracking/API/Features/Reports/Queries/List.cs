@@ -35,6 +35,11 @@ namespace API.Features.Reports.Queries
                     query = query.Where(i => request.Statuses.Contains(i.Status));
                 }
 
+                if (request.BlogId != null)
+                {
+                    query = query.Where(i => i.BlogReport.Id == request.BlogId);
+                }
+
                 var total = await query.CountAsync(cancellationToken);
 
                 var items = await query
@@ -56,6 +61,8 @@ namespace API.Features.Reports.Queries
         public class Query : PageQuery, IRequest<Response>
         {
             public List<string>? Statuses { get; set; }
+
+            public int? BlogId { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>
