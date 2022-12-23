@@ -1,5 +1,7 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Models;
+using API.Features.Shared.Services;
 using API.Infrastructure;
 using AutoMapper;
 using MediatR;
@@ -15,20 +17,22 @@ namespace API.Features.Blogs.Commands
         {
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
+            private readonly IFileService _fileService;
 
-            public Handler(MasterContext dbContext, IMapper mapper)
+            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
                 _mapper = mapper;
+                _fileService = fileService;
             }
 
             public async Task<OperationResult> Handle(Command command, CancellationToken cancellationToken)
             {
-                var request = command.Request;
+                var request = command;
 
                 var blog = await _dbContext.Blogs
                     .Include(i => i.Tags)
-                    .FirstOrDefaultAsync(i => i.Id == command.Request.Id, cancellationToken: cancellationToken);
+                    .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken: cancellationToken);
 
                 if (blog == null)
                 {
@@ -60,6 +64,16 @@ namespace API.Features.Blogs.Commands
                     }
                 }
 
+                if (request.Image != null)
+                {
+                    using var mem = new MemoryStream();
+                    request.Image.CopyTo(mem);
+                    var extension = Path.GetExtension(request.Image.FileName);
+                    var imageName = Path.Combine(Guid.NewGuid().ToString(), extension);
+                    mem.Position = 0;
+                    blog.ImageUrl = await _fileService.UploadAsync(imageName, mem, cancellationToken);
+                }
+
                 BaseUpdate(blog, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -69,13 +83,7 @@ namespace API.Features.Blogs.Commands
 
         public class Command : BaseCommand, IRequest<OperationResult>
         {
-            [FromBody]
             [Required]
-            public Request Request { get; set; } = default!;
-        }
-
-        public class Request
-        {
             public int Id { get; set; }
 
             public string? Header { get; set; }
@@ -83,6 +91,12 @@ namespace API.Features.Blogs.Commands
             public string? Content { get; set; }
 
             public List<int>? TagIds { get; set; }
+
+            public string? SubContent { get; set; }
+
+            public IFormFile? Image { get; set; }
+
+            public int Status { get; set; }
         }
     }
 }

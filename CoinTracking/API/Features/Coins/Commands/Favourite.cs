@@ -56,11 +56,15 @@ namespace API.Features.Coins.Commands
 
                 }
 
-                if (!coin!.Users.Where(x => x.Id == command.Request.UserId).Any())
+                if (coin.Users.Where(x => x.Id == command.Request.UserId).Any())
+                {
+                    coin.Users.Remove(user);
+                }
+                else
                 {
                     coin.Users.Add(user);
-                    await _dbContext.SaveChangesAsync(cancellationToken);
                 }
+                await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return OperationResult.Ok();
             }

@@ -1,5 +1,6 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Models;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
 using AutoMapper;
@@ -16,7 +17,7 @@ namespace API.Features.Tags.Commands
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
 
-            public Handler(MasterContext dbContext, IMapper mapper)
+            public Handler(MasterContext dbContext, IMapper mapper, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
                 _mapper = mapper;

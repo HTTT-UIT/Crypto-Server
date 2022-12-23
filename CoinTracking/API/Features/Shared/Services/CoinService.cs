@@ -9,7 +9,7 @@ namespace API.Features.Shared.Services
         private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
         
-        private readonly string _baseCoinUrl = "https://pro-api.coinmarketcap.com";
+        private readonly string _baseCoinUrl = "https://api.coincap.io/v2/assets/";
 
         public CoinService(IConfiguration configuration, IMediator mediator)
         {
@@ -19,27 +19,23 @@ namespace API.Features.Shared.Services
 
         public Guid SyncCoin(string coinId)
         {
-            var getCoinDetailPath = $"/v2/cryptocurrency/info?id={coinId}";
-
             using HttpClient client = new();
 
-            var api_key = _configuration["COIN_API_KEY"];
-            client.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", api_key);
-            var result = client.GetFromJsonAsync<SyncCoin>(_baseCoinUrl + getCoinDetailPath).Result;
+            var result = client.GetFromJsonAsync<SyncCoin>(_baseCoinUrl + coinId).Result;
 
-            if (result!=null && result.Status.Error_code == 0 && result.Data.Any())
+            if (result != null)
             {
                 Create.Command command = new()
                 {
                     Request = new()
                 };
-                command.Request.Name = result.Data.First().Value.Name;
-                command.Request.RefId = result.Data.First().Value.Id.ToString();
-                command.Request.Symbol = result.Data.First().Value.Symbol;
+                command.Request.Name = result.Data.Name;
+                command.Request.RefId = result.Data.Id;
+                command.Request.Symbol = result.Data.Symbol;
 
                 var newCoin = _mediator.Send(command).Result;
 
-                return newCoin.Value?.Id ?? Guid.Empty; 
+                return newCoin.Value?.Id ?? Guid.Empty;
             }
 
             return Guid.Empty;
@@ -49,21 +45,13 @@ namespace API.Features.Shared.Services
 
     public class SyncCoin
     {
-        public Status Status { get; set; } = new();
-
         [JsonProperty("data")]
-        public Dictionary<int, Data> Data { get; set; } = new();
-    }
-
-    public class Status
-    {
-        public string Error_message { get; set; } = string.Empty;
-        public int Error_code { get; set; }
+        public Data Data { get; set; } = new();
     }
 
     public class Data
     {
-        public int Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
 

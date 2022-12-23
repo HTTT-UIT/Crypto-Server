@@ -1,4 +1,5 @@
-﻿using API.Features.Shared.Services;
+﻿using API.Features.Shared.Models;
+using API.Features.Shared.Services;
 
 namespace API.Configurations
 {
@@ -10,6 +11,7 @@ namespace API.Configurations
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICoinService, CoinService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddTransient<IApplicationUser, ApplicationUser>();
             return services;
         }
     }

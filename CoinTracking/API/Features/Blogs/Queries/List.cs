@@ -37,10 +37,20 @@ namespace API.Features.Blogs.Queries
                     query = query.Where(i => i.Tags.Any(o => request.TagIds.Any(t => o.Id == t)));
                 }
 
-                if(request.AuthorId.HasValue && request.AuthorId.Value != Guid.Empty)
+                if (request.AuthorId.HasValue && request.AuthorId.Value != Guid.Empty)
                 {
-                    query = query.Where(i => i.AuthorId.HasValue 
+                    query = query.Where(i => i.AuthorId.HasValue
                         && i.AuthorId.Value == request.AuthorId.Value);
+                }
+
+                if (request.FollowerId.HasValue && request.FollowerId.Value != Guid.Empty)
+                {
+                    query = query.Where(i => i.FollowUsers.Any(f => f.Id == request.FollowerId));
+                }
+
+                if (request.Header != null)
+                {
+                    query = query.Where(i => i.Header.ToLower().Contains(request.Header.ToLower()));
                 }
 
                 var total = await query.CountAsync(cancellationToken);
@@ -56,6 +66,11 @@ namespace API.Features.Blogs.Queries
                     query = request.SortDir == SortDirection.Ascending
                         ? query.OrderBy(i => i.Id)
                         : query.OrderByDescending(i => i.Id);
+                }
+
+                if (request.Status != null && request.Status.Any())
+                {
+                    query = query.Where(i => request.Status.Contains((int)i.Status));
                 }
 
                 var items = await query
@@ -83,6 +98,12 @@ namespace API.Features.Blogs.Queries
             public string? SortDir { get; set; }
 
             public Guid? AuthorId { get; set; }
+
+            public Guid? FollowerId { get; set; }
+
+            public string? Header { get; set; }
+
+            public List<int>? Status { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>
@@ -99,15 +120,21 @@ namespace API.Features.Blogs.Queries
 
             public string AuthorName { get; set; } = string.Empty;
 
+            public Guid AuthorId { get; set; }
+
+            public string? AuthorImageUrl { get; set; }
+
             public int TotalFollower { get; set; }
 
             public List<Tag> Tags { get; set; } = new();
 
             public bool Deleted { get; set; }
 
-            public string SubContent { get; set; } = string.Empty;
-            
+            public string? SubContent { get; set; }
+
             public string? ImageUrl { get; set; }
+
+            public int Status { get; set; }
         }
 
         public class Tag

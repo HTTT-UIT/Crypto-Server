@@ -29,7 +29,7 @@ namespace API.Features.Blogs
              => HandleRequest(command);
 
         [HttpPut]
-        public Task<IActionResult> Update(Update.Command command)
+        public Task<IActionResult> Update([FromForm]Update.Command command)
             => HandleRequest(command);
 
         [HttpDelete("{id}")]

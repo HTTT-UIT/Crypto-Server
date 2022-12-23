@@ -1,4 +1,5 @@
-﻿using API.Infrastructure.Entities.Common;
+﻿using API.Features.Shared.Constants;
+using API.Infrastructure.Entities.Common;
 
 namespace API.Infrastructure.Entities
 {
@@ -23,6 +24,8 @@ namespace API.Infrastructure.Entities
         public string? SubContent { get; set; }
 
         public string? ImageUrl { get; set; } = string.Empty;
+
+        public BlogStatus Status { get; set; }
 
         public virtual UserEntity? Author { get; set; }
 

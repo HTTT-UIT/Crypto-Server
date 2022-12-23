@@ -21,7 +21,9 @@ namespace API.Features.Shared.Services
         public async Task<Tokens?> Authenticate(User user)
         {
             var users = await _userService.GetList();
-            var matchUsers = users.Where(x => x.UserName == user.UserName && Password.ValidatePassword(x.Password, user.Password));
+            var matchUsers = users.Where(x => x.UserName == user.UserName 
+                && Password.ValidatePassword(x.Password, user.Password)
+                && x.Deleted == false);
             if (!matchUsers.Any())
             {
                 return null;

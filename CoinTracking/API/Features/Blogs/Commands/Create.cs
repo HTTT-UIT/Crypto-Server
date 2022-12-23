@@ -1,11 +1,12 @@
 ﻿using API.Common.Commands;
 using API.Common.Result;
+using API.Features.Shared.Constants;
+using API.Features.Shared.Models;
 using API.Features.Shared.Services;
 using API.Infrastructure;
 using API.Infrastructure.Entities;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,7 +19,8 @@ namespace API.Features.Blogs.Commands
             private readonly MasterContext _dbContext;
             private readonly IMapper _mapper;
             private readonly IFileService _fileService;
-            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService)
+
+            public Handler(MasterContext dbContext, IMapper mapper, IFileService fileService, IApplicationUser applicationUser) : base(applicationUser)
             {
                 _dbContext = dbContext;
                 _mapper = mapper;
@@ -44,15 +46,16 @@ namespace API.Features.Blogs.Commands
                     Header = request.Title,
                     Content = request.Content,
                     AuthorId = request.AuthorId,
-                    SubContent = request.SubContent
+                    SubContent = request.SubContent,
+                    Status = BlogStatus.NEW,
                 };
 
-                if(request.Image != null)
+                if (request.Image != null)
                 {
                     using var mem = new MemoryStream();
                     request.Image.CopyTo(mem);
                     var extension = Path.GetExtension(request.Image.FileName);
-                    var imageName = Guid.NewGuid().ToString() + "." + extension;
+                    var imageName = Path.Combine(Guid.NewGuid().ToString(), extension);
                     mem.Position = 0;
                     blog.ImageUrl = await _fileService.UploadAsync(imageName, mem, cancellationToken);
                 }

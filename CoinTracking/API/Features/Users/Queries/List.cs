@@ -25,7 +25,8 @@ namespace API.Features.Users.Queries
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var query = _dbContext.Users.AsNoTracking();
+                var query = _dbContext.Users.AsNoTracking()
+                    .FilterDeleted();
 
                 var total = await query.CountAsync(cancellationToken);
 
@@ -68,9 +69,14 @@ namespace API.Features.Users.Queries
         public class ResponseItem
         {
             public Guid Id { get; set; }
+
             public string UserName { get; set; } = string.Empty;
+
             public string? Name { get; set; }
+
             public DateTime? Dob { get; set; }
+
+            public string? ProfileImageUrl { get; set; }
         }
     }
 }
