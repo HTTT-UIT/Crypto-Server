@@ -37,9 +37,9 @@ namespace API.Features.Blogs.Queries
                     query = query.Where(i => i.Tags.Any(o => request.TagIds.Any(t => o.Id == t)));
                 }
 
-                if(request.AuthorId.HasValue && request.AuthorId.Value != Guid.Empty)
+                if (request.AuthorId.HasValue && request.AuthorId.Value != Guid.Empty)
                 {
-                    query = query.Where(i => i.AuthorId.HasValue 
+                    query = query.Where(i => i.AuthorId.HasValue
                         && i.AuthorId.Value == request.AuthorId.Value);
                 }
 
@@ -66,6 +66,15 @@ namespace API.Features.Blogs.Queries
                     query = request.SortDir == SortDirection.Ascending
                         ? query.OrderBy(i => i.Id)
                         : query.OrderByDescending(i => i.Id);
+                }
+
+                if (request.Status == null || !request.Status.Any())
+                {
+                    query = query.Where(i => i.Status == BlogStatus.ACCEPTED || i.Status == BlogStatus.WARNED);
+                }
+                else
+                {
+                    query = query.Where(i => request.Status.Contains((int)i.Status));
                 }
 
                 var items = await query
@@ -97,6 +106,8 @@ namespace API.Features.Blogs.Queries
             public Guid? FollowerId { get; set; }
 
             public string? Header { get; set; }
+
+            public List<int>? Status { get; set; }
         }
 
         public class Response : PagedResult<ResponseItem>
