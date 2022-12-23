@@ -18,6 +18,10 @@ namespace API.Features.Images
         public async Task<string> UploadImage(IFormFile form)
         {
             using var mem = new MemoryStream();
+            if (mem == null  || form == null)
+            {
+                return string.Empty;
+            }
             form.CopyTo(mem);
             var extension = Path.GetExtension(form.FileName);
             var imageName = Path.Combine(Guid.NewGuid().ToString(), extension);
