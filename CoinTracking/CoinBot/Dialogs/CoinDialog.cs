@@ -15,12 +15,14 @@ namespace CoinBot.Dialogs
         #region Variables
         private readonly BotServices _botServices;
         private CoinMarketCapApi _coinMarketCapApi;
+        private Helpers.Common _common;
         #endregion
 
         public CoinDialog(string dialogId, BotServices botServices, CoinMarketCapApi coinMarketCapApi) : base(dialogId)
         {
             _botServices = botServices ?? throw new System.ArgumentNullException(nameof(botServices));
             _coinMarketCapApi = coinMarketCapApi ?? throw new System.ArgumentNullException(nameof(coinMarketCapApi));
+            _common = new Helpers.Common();
 
             InitializeWaterfallDialog();
         }
@@ -52,7 +54,7 @@ namespace CoinBot.Dialogs
 
             if (coinOuter != null)
             {
-                var coinData = _coinMarketCapApi.MakeAPICall(string.Format("/v2/cryptocurrency/info?slug={0}", coinOuter["Coin"][0].ToString()));
+                var coinData = _coinMarketCapApi.MakeAPICall(string.Format("/v2/cryptocurrency/info?slug={0}", coinOuter["Coin"][0].ToString().ToLower()));
 
                 // Create a HeroCard with options for the user to interact with the bot.
                 var card = new HeroCard
