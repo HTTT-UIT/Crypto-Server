@@ -46,6 +46,11 @@ namespace API.Features.Reports.Commands
                     Status = ReportStatus.New
                 };
 
+                if (blog.Status == BlogStatus.ACCEPTED)
+                {
+                    blog.Status = BlogStatus.WARNED;
+                }
+
                 BaseCreate(report, command);
                 await _dbContext.AddAsync(report, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);

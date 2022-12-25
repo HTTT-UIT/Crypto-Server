@@ -64,16 +64,6 @@ namespace API.Features.Blogs.Commands
                     }
                 }
 
-                if (request.Image != null)
-                {
-                    using var mem = new MemoryStream();
-                    request.Image.CopyTo(mem);
-                    var extension = Path.GetExtension(request.Image.FileName);
-                    var imageName = Path.Combine(Guid.NewGuid().ToString(), extension);
-                    mem.Position = 0;
-                    blog.ImageUrl = await _fileService.UploadAsync(imageName, mem, cancellationToken);
-                }
-
                 BaseUpdate(blog, command);
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -95,7 +85,7 @@ namespace API.Features.Blogs.Commands
 
             public string? SubContent { get; set; }
 
-            public IFormFile? Image { get; set; }
+            public string? ImageUrl { get; set; }
 
             public int? Status { get; set; }
         }

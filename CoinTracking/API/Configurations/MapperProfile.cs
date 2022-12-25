@@ -18,6 +18,7 @@ namespace API.Configurations
                 .ForMember(d => d.Header, opt => opt.Condition(s => !string.IsNullOrEmpty(s.Header)))
                 .ForMember(d => d.Content, opt => opt.Condition(s => !string.IsNullOrEmpty(s.Content)))
                 .ForMember(d => d.SubContent, opt => opt.Condition(s => !string.IsNullOrEmpty(s.SubContent)))
+                .ForMember(d => d.ImageUrl, opt => opt.Condition(s => !string.IsNullOrEmpty(s.ImageUrl)))
                 .ForMember(d => d.Status, opt => opt.Condition(s => s.Status != null))
                 .ForMember(d => d.AuthorId, opt => opt.Ignore());
 
